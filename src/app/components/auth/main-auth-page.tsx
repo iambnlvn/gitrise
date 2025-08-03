@@ -8,19 +8,11 @@ import { Checkbox } from "@/components/ui/checkbox";
 import {
   User,
   Lock,
-  Github,
   GitBranch,
   GitCommit,
   GitFork,
-  GitGraph,
-  GitPullRequest,
   GitMerge,
-  Code,
-  Users,
-  Star,
-  Eye,
-  Shield,
-  Zap,
+  Github,
 } from "lucide-react";
 import Image from "next/image";
 
@@ -29,168 +21,6 @@ const GitLabIcon = ({ className }: { className?: string }) => (
     <path d="M22.65 14.39L12 22.13 1.35 14.39a.84.84 0 0 1-.3-.94l1.22-3.78 2.44-7.51A.42.42 0 0 1 4.82 2a.43.43 0 0 1 .58 0 .42.42 0 0 1 .11.16l2.44 7.49h8.1l2.44-7.51A.42.42 0 0 1 18.6 2a.43.43 0 0 1 .58 0 .42.42 0 0 1 .11.16l2.44 7.51 1.22 3.78a.84.84 0 0 1-.3.94z" />
   </svg>
 );
-
-const orbitConfig = {
-  inner: {
-    duration: "20s",
-    direction: "normal" as const,
-    inset: 9,
-    icons: [
-      {
-        position: "top",
-        icon: GitBranch,
-        size: 16,
-        iconSize: 8,
-        gradient: "from-pink-400 to-pink-500",
-        feature: "Branching",
-      },
-      {
-        position: "right",
-        icon: GitCommit,
-        size: 16,
-        iconSize: 8,
-        gradient: "from-primary to-secondary",
-        feature: "Commits",
-      },
-      {
-        position: "bottom",
-        icon: GitFork,
-        size: 16,
-        iconSize: 8,
-        gradient: "from-blue-400 to-blue-500",
-        feature: "Forking",
-      },
-      {
-        position: "left",
-        icon: GitGraph,
-        size: 16,
-        iconSize: 8,
-        gradient: "from-accent to-secondary",
-        feature: "Git Graph",
-      },
-    ],
-  },
-  middle: {
-    duration: "30s",
-    direction: "reverse" as const,
-    inset: 16,
-    icons: [
-      {
-        position: "top",
-        icon: GitPullRequest,
-        size: 12,
-        iconSize: 6,
-        gradient: "from-green-400 to-green-500",
-        feature: "Pull Requests",
-      },
-      {
-        position: "top-right",
-        icon: GitMerge,
-        size: 12,
-        iconSize: 6,
-        gradient: "from-purple-400 to-purple-500",
-        feature: "Merging",
-      },
-      {
-        position: "bottom-right",
-        icon: Code,
-        size: 12,
-        iconSize: 6,
-        gradient: "from-orange-400 to-orange-500",
-        feature: "Code Reviews",
-      },
-      {
-        position: "bottom",
-        icon: Users,
-        size: 12,
-        iconSize: 6,
-        gradient: "from-yellow-400 to-yellow-500",
-        feature: "Collaboration",
-      },
-      {
-        position: "bottom-left",
-        icon: Star,
-        size: 12,
-        iconSize: 6,
-        gradient: "from-red-400 to-red-500",
-        feature: "Starring",
-      },
-      {
-        position: "top-left",
-        icon: Eye,
-        size: 12,
-        iconSize: 6,
-        gradient: "from-indigo-400 to-indigo-500",
-        feature: "Watching",
-      },
-    ],
-  },
-  outer: {
-    duration: "40s",
-    direction: "normal" as const,
-    inset: 24,
-    icons: [
-      {
-        position: "top",
-        icon: Shield,
-        size: 10,
-        iconSize: 5,
-        gradient: "from-teal-400 to-teal-500",
-        feature: "Security",
-      },
-      {
-        position: "right",
-        icon: Zap,
-        size: 10,
-        iconSize: 5,
-        gradient: "from-cyan-400 to-cyan-500",
-        feature: "Performance",
-      },
-      {
-        position: "bottom",
-        icon: Github,
-        size: 10,
-        iconSize: 5,
-        gradient: "from-lime-400 to-lime-500",
-        feature: "GitHub Integration",
-      },
-      {
-        position: "left",
-        icon: GitLabIcon,
-        size: 10,
-        iconSize: 5,
-        gradient: "from-rose-400 to-rose-500",
-        feature: "GitLab Integration",
-      },
-    ],
-  },
-};
-
-// Helper function to get position classes based on position string
-const getPositionClasses = (position: string, inset: number) => {
-  const distance = inset === 9 ? 8 : inset === 16 ? 6 : 4;
-
-  switch (position) {
-    case "top":
-      return `absolute -top-${distance} left-1/2 -translate-x-1/2 transform`;
-    case "right":
-      return `absolute top-1/2 -right-${distance} -translate-y-1/2 transform`;
-    case "bottom":
-      return `absolute -bottom-${distance} left-1/2 -translate-x-1/2 transform`;
-    case "left":
-      return `absolute top-1/2 -left-${distance} -translate-y-1/2 transform`;
-    case "top-right":
-      return `absolute top-1/4 -right-${distance} -translate-y-1/2 transform`;
-    case "bottom-right":
-      return `absolute top-3/4 -right-${distance} -translate-y-1/2 transform`;
-    case "bottom-left":
-      return `absolute top-3/4 -left-${distance} -translate-y-1/2 transform`;
-    case "top-left":
-      return `absolute top-1/4 -left-${distance} -translate-y-1/2 transform`;
-    default:
-      return "";
-  }
-};
 
 export function MainAuthForm() {
   const [isLogin, setIsLogin] = useState(true);
@@ -407,30 +237,27 @@ export function MainAuthForm() {
                   </div>
 
                   {/* Dynamic orbiting icons based on configuration */}
-                  {Object.entries(orbitConfig).map(([orbitName, orbit]) => (
-                    <div
-                      key={orbitName}
-                      className={`absolute -inset-${orbit.inset} animate-spin`}
-                      style={{
-                        animationDuration: orbit.duration,
-                        animationDirection: orbit.direction,
-                      }}
-                    >
-                      {orbit.icons.map((iconConfig, index) => {
-                        const Icon = iconConfig.icon;
-                        return (
-                          <div
-                            key={`${orbitName}-${index}`}
-                            className={`${getPositionClasses(iconConfig.position, orbit.inset)} flex size-${iconConfig.size} items-center justify-center rounded-full bg-gradient-to-br ${iconConfig.gradient} shadow-lg`}
-                          >
-                            <Icon
-                              className={`size-${iconConfig.iconSize} text-white`}
-                            />
-                          </div>
-                        );
-                      })}
+                  {/* Orbiting user avatars */}
+                  <div
+                    className="absolute inset-0 animate-spin"
+                    style={{ animationDuration: "20s" }}
+                  >
+                    <div className="absolute -top-8 left-1/2 flex size-10 -translate-x-1/2 transform items-center justify-center rounded-full bg-gradient-to-br from-pink-400 to-pink-500 shadow-lg">
+                      <GitCommit className="size-8 text-white" />
                     </div>
-                  ))}
+
+                    <div className="from-primary to-secondary absolute top-1/2 -right-8 flex size-10 -translate-y-1/2 transform items-center justify-center rounded-full bg-gradient-to-br shadow-lg">
+                      <GitBranch className="size-8 text-white" />
+                    </div>
+
+                    <div className="absolute -bottom-8 left-1/2 flex size-10 -translate-x-1/2 transform items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-blue-500 shadow-lg">
+                      <GitFork className="size-8 text-white" />
+                    </div>
+
+                    <div className="from-accent to-secondary absolute top-1/2 -left-8 flex size-10 -translate-y-1/2 transform items-center justify-center rounded-full bg-gradient-to-br shadow-lg">
+                      <GitMerge className="size-8 text-white" />
+                    </div>
+                  </div>
 
                   {/* Connecting orbital rings */}
                   <svg
