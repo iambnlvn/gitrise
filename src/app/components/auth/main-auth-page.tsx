@@ -15,6 +15,10 @@ import {
   Github,
 } from "lucide-react";
 import Image from "next/image";
+import { loginSchema, signupSchema } from "@/lib/validations/auth";
+import { AuthApiResponse } from "@/types/api";
+import { treeifyError } from "zod";
+import { cn } from "@/lib/utils";
 
 const GitLabIcon = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor">
@@ -28,11 +32,61 @@ export function MainAuthForm() {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [responseMessage, setResponseMessage] = useState<string | null>(null);
+  const [isError, setIsError] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement Supabase authentication
-    console.log("Form submitted:", { email, password, username, isLogin });
+    setResponseMessage(null);
+
+    try {
+      const endpoint = isLogin ? "/api/auth/login" : "/api/auth/signup";
+      const payload = isLogin
+        ? { email, password }
+        : { email, password, username, agreedToTerms };
+      const validationSchema = isLogin ? loginSchema : signupSchema;
+      const validationResult = validationSchema.safeParse(payload);
+
+      if (!validationResult.success) {
+        const errors = treeifyError(validationResult.error);
+
+        setResponseMessage(errors.errors.join(", "));
+        setIsError(true);
+        return;
+      }
+
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(validationResult.data),
+      });
+
+      const data: AuthApiResponse = await response.json();
+
+      if (!response.ok) {
+        setResponseMessage(
+          data.error?.message || "Authentication failed. Please try again.",
+        );
+        setIsError(true);
+      } else {
+        setResponseMessage(data.message || "Authentication successful!");
+        setIsError(false);
+
+        if (!isLogin) {
+          setUsername("");
+          setEmail("");
+          setPassword("");
+          setAgreedToTerms(false);
+        }
+      }
+    } catch {
+      setResponseMessage(
+        "An unexpected error occurred. Please try again later.",
+      );
+      setIsError(true);
+    }
   };
 
   const handleGitHubAuth = async () => {
@@ -97,7 +151,7 @@ export function MainAuthForm() {
             <div className="grid items-center gap-8 lg:grid-cols-2">
               {/* Left side - Form */}
               <div className="bg-background rounded-2xl p-8 shadow-xl">
-                <div className="mb-6">
+                <div className="mb-3">
                   <h2 className="text-foreground mb-2 text-2xl font-bold">
                     {isLogin
                       ? "Sign in to GitRise"
@@ -110,7 +164,7 @@ export function MainAuthForm() {
                   </p>
                 </div>
 
-                <div className="mb-6 space-y-3">
+                <div className="mb-3 space-y-3">
                   <Button
                     type="button"
                     variant="outline"
@@ -206,19 +260,26 @@ export function MainAuthForm() {
                     {isLogin ? "Sign in" : "Create account"}
                   </Button>
                 </form>
-
-                <div className="mt-6 text-center">
+                <p
+                  className={cn(
+                    isError ? "text-red-500" : "text-green-500",
+                    "mt-4 min-h-[1.5rem] text-center font-medium",
+                  )}
+                >
+                  {responseMessage}
+                </p>
+                <div className="mt-1 flex justify-center space-x-2 text-center">
                   <p className="text-muted-foreground">
                     {isLogin
                       ? "Don't have an account? "
                       : "Already have an account? "}
-                    <button
-                      onClick={() => setIsLogin(!isLogin)}
-                      className="text-primary hover:text-primary/80 font-semibold"
-                    >
-                      {isLogin ? "Sign up" : "Sign in"}
-                    </button>
                   </p>
+                  <button
+                    onClick={() => setIsLogin(!isLogin)}
+                    className="text-primary hover:text-primary/80 font-semibold"
+                  >
+                    {isLogin ? "Sign up" : "Sign in"}
+                  </button>
                 </div>
               </div>
 
