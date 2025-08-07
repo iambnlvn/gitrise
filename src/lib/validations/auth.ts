@@ -28,6 +28,10 @@ export const signupSchema = object({
     },
   ),
 });
+export const forgotPasswordSchema = object({
+  email: email("Please enter a valid email address"),
+});
 
 export type LoginInput = z.infer<typeof loginSchema>;
 export type SignupInput = z.infer<typeof signupSchema>;
+export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;

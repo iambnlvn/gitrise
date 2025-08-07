@@ -19,6 +19,7 @@ import { loginSchema, signupSchema } from "@/lib/validations/auth";
 import { AuthApiResponse } from "@/types/api";
 import { treeifyError } from "zod";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 const GitLabIcon = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor">
@@ -281,6 +282,17 @@ export function MainAuthForm() {
                     {isLogin ? "Sign up" : "Sign in"}
                   </button>
                 </div>
+                {isLogin && (
+                  <div className="mt-4 text-center">
+                    <Link
+                      href="/auth/forgot-password"
+                      className="text-primary hover:text-primary/80 text-sm"
+                      type="button"
+                    >
+                      Forgot your password?
+                    </Link>
+                  </div>
+                )}
               </div>
 
               {/* Right side - Illustration */}
