@@ -3,11 +3,13 @@ import { forgotPasswordSchema } from "@/lib/validations/auth";
 import { treeifyError } from "zod";
 import { AuthApiResponse } from "@/types/api";
 import { createClient } from "@/utils/supabase/server";
+import { headers } from "next/headers";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const result = forgotPasswordSchema.safeParse(body);
+    const origin = (await headers()).get("origin");
 
     if (!result.success) {
       return NextResponse.json<AuthApiResponse>(
@@ -29,7 +31,7 @@ export async function POST(request: NextRequest) {
     const supabase = await createClient();
 
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/reset-password`,
+      redirectTo: `${origin}/auth/reset-password`,
     });
 
     if (error) {
@@ -49,8 +51,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    return NextResponse.json({
+    return NextResponse.json<AuthApiResponse>({
+      success: true,
       message: "Password reset email sent successfully",
+      data: { user: null },
+      error: {
+        code: undefined,
+        details: undefined,
+        message: "",
+      },
     });
   } catch (error) {
     return NextResponse.json<AuthApiResponse>(
