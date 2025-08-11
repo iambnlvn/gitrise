@@ -4,7 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 import { getAuthErrorMessage } from "@/lib/supabase-errors";
 import { treeifyError } from "zod";
 import { AuthApiResponse, AuthErrorCode } from "@/types/api";
-
+import { headers } from "next/headers";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -27,6 +27,7 @@ export async function POST(request: NextRequest) {
     const { email, password, username } = validationResult.data;
 
     const supabase = await createClient();
+    const origin = (await headers()).get("origin");
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -35,9 +36,7 @@ export async function POST(request: NextRequest) {
           username,
           full_name: username,
         },
-        emailRedirectTo:
-          process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL ||
-          `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard`,
+        emailRedirectTo: `${origin}/api/auth/callback`,
       },
     });
 
