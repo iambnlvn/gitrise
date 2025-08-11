@@ -24,22 +24,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { password, token } = result.data;
-
-    if (!token) {
-      return NextResponse.json<AuthApiResponse>(
-        {
-          success: false,
-          message: "Reset token is required",
-          error: {
-            code: "MISSING_TOKEN",
-            message: "Reset token is required",
-            details: "No reset token provided",
-          },
-        },
-        { status: 400 },
-      );
-    }
+    const { password } = result.data;
 
     const supabase = await createClient();
 

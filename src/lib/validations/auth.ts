@@ -33,7 +33,6 @@ export const forgotPasswordSchema = object({
 });
 
 export const resetPasswordSchema = object({
-  token: string().min(1, "Reset token is required"),
   password: string()
     .min(8, "Password must be at least 8 characters")
     .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
