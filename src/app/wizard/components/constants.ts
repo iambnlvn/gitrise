@@ -162,3 +162,44 @@ export const INITIAL_WIZARD_DATA: WizardData = {
   projectTypes: [],
   teamSize: "",
 };
+
+export const EXPERIENCE_LEVELS = [
+  {
+    value: "beginner",
+    label: "Beginner",
+    desc: "0-2 years",
+    icon: "🌱",
+  },
+  {
+    value: "intermediate",
+    label: "Intermediate",
+    desc: "2-5 years",
+    icon: "🚀",
+  },
+  {
+    value: "senior",
+    label: "Senior",
+    desc: "5-10 years",
+    icon: "⭐",
+  },
+  { value: "expert", label: "Expert", desc: "10+ years", icon: "👑" },
+];
+
+export const PRIMARY_ROLES = [
+  { value: "frontend", label: "Frontend Developer", icon: "🎨" },
+  { value: "backend", label: "Backend Developer", icon: "⚙️" },
+  {
+    value: "fullstack",
+    label: "Full Stack Developer",
+    icon: "🔧",
+  },
+  { value: "mobile", label: "Mobile Developer", icon: "📱" },
+  { value: "devops", label: "DevOps Engineer", icon: "🚀" },
+  { value: "data", label: "Data Scientist", icon: "📊" },
+  { value: "ml", label: "ML Engineer", icon: "🤖" },
+  { value: "security", label: "Security Engineer", icon: "🔒" },
+  { value: "designer", label: "UI/UX Designer", icon: "✨" },
+  { value: "manager", label: "Engineering Manager", icon: "👥" },
+  { value: "student", label: "Student", icon: "🎓" },
+  { value: "other", label: "Other", icon: "🌟" },
+];

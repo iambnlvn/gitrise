@@ -12,6 +12,7 @@ import { OnboardingWizardProps } from "./types";
 import { useWizardStore } from "@/app/store/wizard-store";
 import { STEPS } from "./constants";
 import { PersonalInfoStep } from "./steps/personal-info-step";
+import DeveloperProfileStep from "@/app/wizard/components/steps/dev-profile-step";
 
 export function WizardLayout({ onComplete, onSkip }: OnboardingWizardProps) {
   const { currentStep, data, nextStep, prevStep } = useWizardStore();
@@ -43,8 +44,8 @@ export function WizardLayout({ onComplete, onSkip }: OnboardingWizardProps) {
     switch (currentStep) {
       case 0:
         return <PersonalInfoStep />;
-      //   case 1:
-      //     return <DeveloperProfileStep />;
+      case 1:
+        return <DeveloperProfileStep />;
       //   case 2:
       //     return <InterestsGoalsStep />;
       //   case 3:
@@ -82,7 +83,7 @@ export function WizardLayout({ onComplete, onSkip }: OnboardingWizardProps) {
             </div>
           </CardHeader>
 
-          <CardContent className="pt-3">
+          <CardContent className="pt-6">
             {renderStep()}
 
             <div className="mt-8 flex items-center justify-between border-t pt-6">
