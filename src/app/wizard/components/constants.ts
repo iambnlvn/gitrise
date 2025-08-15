@@ -203,3 +203,81 @@ export const PRIMARY_ROLES = [
   { value: "student", label: "Student", icon: "🎓" },
   { value: "other", label: "Other", icon: "🌟" },
 ];
+
+export const GOALS = [
+  {
+    value: "learning",
+    label: "Learning & Skill Development",
+    desc: "Expand your knowledge and master new technologies",
+    icon: "📚",
+    color: "from-blue-500 to-cyan-500",
+  },
+  {
+    value: "career",
+    label: "Career Advancement",
+    desc: "Level up professionally and land better opportunities",
+    icon: "📈",
+    color: "from-green-500 to-emerald-500",
+  },
+  {
+    value: "projects",
+    label: "Building Personal Projects",
+    desc: "Create amazing things and bring ideas to life",
+    icon: "🛠️",
+    color: "from-purple-500 to-pink-500",
+  },
+  {
+    value: "collaboration",
+    label: "Team Collaboration",
+    desc: "Work better with others and contribute to teams",
+    icon: "🤝",
+    color: "from-orange-500 to-red-500",
+  },
+  {
+    value: "opensource",
+    label: "Contributing to Open Source",
+    desc: "Give back to the community and make an impact",
+    icon: "🌍",
+    color: "from-teal-500 to-blue-500",
+  },
+  {
+    value: "business",
+    label: "Building a Business/Startup",
+    desc: "Entrepreneurial journey and creating value",
+    icon: "🚀",
+    color: "from-yellow-500 to-orange-500",
+  },
+];
+
+export const TEAM_SIZES = [
+  {
+    value: "solo",
+    label: "Solo Developer",
+    desc: "I work best alone",
+    icon: "🧑‍💻",
+  },
+  {
+    value: "small",
+    label: "Small Team (2-5 people)",
+    desc: "Close-knit collaboration",
+    icon: "👥",
+  },
+  {
+    value: "medium",
+    label: "Medium Team (6-15 people)",
+    desc: "Balanced team dynamics",
+    icon: "👨‍👩‍👧‍👦",
+  },
+  {
+    value: "large",
+    label: "Large Team (16+ people)",
+    desc: "Enterprise scale",
+    icon: "🏢",
+  },
+  {
+    value: "varies",
+    label: "Varies by Project",
+    desc: "Flexible approach",
+    icon: "🔄",
+  },
+];
