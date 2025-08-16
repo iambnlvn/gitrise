@@ -161,6 +161,7 @@ export const INITIAL_WIZARD_DATA: WizardData = {
   primaryGoal: "",
   projectTypes: [],
   teamSize: "",
+  productivityLevel: 50,
 };
 
 export const EXPERIENCE_LEVELS = [

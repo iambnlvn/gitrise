@@ -14,6 +14,7 @@ import { STEPS } from "./constants";
 import { PersonalInfoStep } from "./steps/personal-info-step";
 import DeveloperProfileStep from "@/app/wizard/components/steps/dev-profile-step";
 import { InterestsGoalsStep } from "./steps/interests-step";
+import { PreferencesStep } from "./steps/preferences-step";
 
 export function WizardLayout({ onComplete, onSkip }: OnboardingWizardProps) {
   const { currentStep, data, nextStep, prevStep } = useWizardStore();
@@ -49,8 +50,8 @@ export function WizardLayout({ onComplete, onSkip }: OnboardingWizardProps) {
         return <DeveloperProfileStep />;
       case 2:
         return <InterestsGoalsStep />;
-      // case 3:
-      //   return <PreferencesStep />;
+      case 3:
+        return <PreferencesStep />;
       default:
         return null;
     }

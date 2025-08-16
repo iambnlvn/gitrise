@@ -26,6 +26,7 @@ export interface WizardData {
   primaryGoal: string;
   projectTypes: string[];
   teamSize: string;
+  productivityLevel: number;
 }
 
 export interface Step {
