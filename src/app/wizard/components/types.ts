@@ -40,3 +40,5 @@ export interface OnboardingWizardProps {
   onComplete: (data: WizardData) => void;
   onSkip: () => void;
 }
+
+export type CompletionState = "loading" | "success" | "error";
