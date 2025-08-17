@@ -20,6 +20,7 @@ import { AuthApiResponse } from "@/types/api";
 import { treeifyError } from "zod";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const GitLabIcon = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor">
@@ -35,7 +36,7 @@ export function MainAuthForm() {
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [responseMessage, setResponseMessage] = useState<string | null>(null);
   const [isError, setIsError] = useState<boolean>(false);
-
+  const router = useRouter();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setResponseMessage(null);
@@ -80,6 +81,7 @@ export function MainAuthForm() {
           setEmail("");
           setPassword("");
           setAgreedToTerms(false);
+          router.replace("/dashboard");
         }
       }
     } catch {
