@@ -39,7 +39,7 @@ interface RepositoryCardProps {
   watchers?: number;
   issues?: number;
   progress?: number;
-  owner?: string;
+  owner: string;
   branches?: number;
   isStarred?: boolean;
   isForked?: boolean;
@@ -106,7 +106,7 @@ export function RepositoryCard({
                 </Link>
                 <Link
                   href={`/${owner}/${name}`}
-                  className="text-primary ml-0.5 font-bold transition-colors hover:underline"
+                  className="text-primary ml-0.5 max-w-[150px] overflow-hidden font-bold text-ellipsis whitespace-nowrap transition-colors hover:underline sm:max-w-[200px]"
                 >
                   {name}
                 </Link>
@@ -119,7 +119,6 @@ export function RepositoryCard({
                       className="ml-1 border-amber-200 bg-amber-50/30 text-amber-700 dark:border-amber-800/30 dark:bg-amber-900/20 dark:text-amber-500"
                     >
                       <Lock className="mr-0.5 size-2.5" />
-                      Private
                     </Badge>
                   </TooltipTrigger>
                   <TooltipContent>
