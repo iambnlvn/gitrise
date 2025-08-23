@@ -35,11 +35,11 @@ export default function DashboardPage() {
               {/* Search and Filter */}
               <div className="mb-6 flex items-center space-x-4">
                 <div className="relative max-w-md flex-1">
-                  <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
+                  <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
                   <Input placeholder="Find a repository..." className="pl-10" />
                 </div>
                 <Button variant="outline" size="sm">
-                  <Filter className="mr-2 h-4 w-4" />
+                  <Filter className="mr-2 size-4" />
                   Filter
                 </Button>
               </div>
@@ -47,9 +47,10 @@ export default function DashboardPage() {
               {/* Repository Grid */}
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {mockRepositories.map((repo, index) => (
-                  <Link key={index} href={`/repository/john.doe/${repo.name}`}>
+                  <Link key={index} href={`/john.doe/${repo.name}`}>
                     <RepositoryCard
                       name={repo.name}
+                      owner={repo.owner}
                       description={repo.description}
                       language={repo.language}
                       languageColor={repo.languageColor}
