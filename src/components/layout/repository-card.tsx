@@ -26,12 +26,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import { getLanguageColor } from "@/utils/color-utils";
 
 interface RepositoryCardProps {
   name: string;
   description: string;
   language: string;
-  languageColor: string;
   stars: number;
   forks: number;
   isPrivate?: boolean;
@@ -51,7 +51,6 @@ export function RepositoryCard({
   name,
   description,
   language,
-  languageColor,
   stars,
   forks,
   isPrivate = false,
@@ -68,7 +67,7 @@ export function RepositoryCard({
   const [forkCount, setForkCount] = useState(forks);
   const [isStarring, setIsStarring] = useState(false);
   const [isForking, setIsForking] = useState(false);
-
+  const color = getLanguageColor(language);
   const handleStar = async () => {
     setIsStarring(true);
     try {
@@ -205,7 +204,7 @@ export function RepositoryCard({
                 <div className="flex items-center gap-x-1">
                   <Circle
                     className="size-2.5 fill-current"
-                    style={{ color: languageColor }}
+                    style={{ color: color }}
                   />
                   <span>{language}</span>
                 </div>
