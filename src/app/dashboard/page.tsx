@@ -53,7 +53,6 @@ export default function DashboardPage() {
                       owner={repo.owner}
                       description={repo.description}
                       language={repo.language}
-                      languageColor={repo.languageColor}
                       stars={repo.stars}
                       forks={repo.forks}
                       isPrivate={repo.isPrivate}
