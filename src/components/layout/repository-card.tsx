@@ -105,7 +105,7 @@ export function RepositoryCard({
                 </Link>
                 <Link
                   href={`/${owner}/${name}`}
-                  className="text-primary ml-0.5 max-w-[150px] overflow-hidden font-bold text-ellipsis whitespace-nowrap transition-colors hover:underline sm:max-w-[200px]"
+                  className="text-primary ml-0.5 max-w-[150px] overflow-hidden font-bold text-ellipsis whitespace-nowrap transition-colors hover:underline sm:max-w-[100px]"
                 >
                   {name}
                 </Link>
@@ -190,14 +190,18 @@ export function RepositoryCard({
             </div>
           </div>
 
-          {/* Description */}
-          {description && (
-            <p className="text-muted-foreground mb-3 line-clamp-2 text-xs sm:text-sm">
-              {description}
-            </p>
-          )}
+          <div className="mb-1 min-h-[2.5rem] sm:min-h-[3rem]">
+            {description ? (
+              <p className="text-muted-foreground line-clamp-2 text-xs text-ellipsis sm:text-sm">
+                {description}
+              </p>
+            ) : (
+              <p className="text-muted-foreground/60 text-xs italic sm:text-sm">
+                No description provided
+              </p>
+            )}
+          </div>
 
-          {/* Footer with language, forks and update date */}
           <div className="flex flex-wrap items-center justify-between gap-y-2 text-xs">
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
               {language && (
