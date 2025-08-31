@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Header } from "../../components/layout/header";
 import { RepositorySidebar } from "../../components/layout/repository-sidebar";
 import { RepositoryCard } from "../../components/layout/repository-card";
-import { ProtectedRoute } from "../../components/layout/proteced-route";
+import { ProtectedRoute } from "../../components/layout/protected-route";
 import { mockRepositories } from "./constants/constants";
 
 export default function DashboardPage() {

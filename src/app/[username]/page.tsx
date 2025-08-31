@@ -1,5 +1,5 @@
 import { Header } from "@/components/layout/header";
-import { ProtectedRoute } from "@/components/layout/proteced-route";
+import { ProtectedRoute } from "@/components/layout/protected-route";
 import { UserProfile } from "./components/user-profile";
 import { createClient } from "@/utils/supabase/server";
 
