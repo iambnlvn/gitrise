@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import { RepositoryCard } from "@/components/layout/repository-card";
 import { Repository } from "@/types/profile";
 import { Pin } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface PinnedRepositoriesProps {
   userId: string;
@@ -12,7 +12,7 @@ interface PinnedRepositoriesProps {
 export function PinnedRepositories({ userId }: PinnedRepositoriesProps) {
   const [pinnedRepos, setPinnedRepos] = useState<Repository[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  const router = useRouter();
   useEffect(() => {
     const loadPinnedRepos = async () => {
       try {
@@ -75,9 +75,12 @@ export function PinnedRepositories({ userId }: PinnedRepositoriesProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
           >
-            <Link href={`/${repo.owner}/${repo.name}`}>
+            <div
+              className="cursor-pointer"
+              onClick={() => router.push(`/${repo.owner}/${repo.name}`)}
+            >
               <RepositoryCard {...repo} />
-            </Link>
+            </div>
           </motion.div>
         ))}
       </div>
