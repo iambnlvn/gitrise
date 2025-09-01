@@ -1,4 +1,4 @@
-import { Repository, Profile } from "@/types/profile";
+import { Repository } from "@/types/profile";
 
 export const mockRepositories: Repository[] = [
   {
@@ -100,52 +100,3 @@ export const recentActivity = [
     color: "bg-purple-500",
   },
 ];
-
-export const mockUser: Profile = {
-  id: "1",
-  username: "iambnlvn",
-  name: "Benaya Ilouz",
-  email: "benaya@example.com",
-  avatar: "https://avatars.githubusercontent.com/u/12345678",
-  bio: "Software engineer passionate about open source and building developer tools",
-  location: "Paris, France",
-  website: "https://example.dev",
-  company: "@acme",
-  joinDate: "2020-01-15",
-  followers: 284,
-  following: 127,
-  publicRepos: 26,
-  starredRepos: 312,
-  totalStars: 748,
-  totalForks: 192,
-  totalCommits: 2158,
-  streak: 12,
-  rank: "Gold",
-  languages: [
-    {
-      name: "TypeScript",
-      percentage: 42,
-      color: "",
-    },
-    {
-      name: "Python",
-      percentage: 28,
-      color: "",
-    },
-    {
-      name: "Rust",
-      percentage: 15,
-      color: "",
-    },
-    {
-      name: "Shell",
-      percentage: 8,
-      color: "",
-    },
-    {
-      name: "Go",
-      percentage: 7,
-      color: "",
-    },
-  ],
-};

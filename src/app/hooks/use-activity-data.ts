@@ -10,8 +10,7 @@ export function useActivityData(userId: string) {
       try {
         setIsLoading(true);
         // const data = await fetchCommitData(userId);
-        const data: CommitDay[] = [];
-        setCommitData(data);
+        setCommitData(generateCommitData());
       } catch (err) {
         setError(
           err instanceof Error ? err : new Error("Failed to load commit data"),

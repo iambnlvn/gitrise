@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import { RepositoryCard } from "@/components/layout/repository-card";
 import { Repository } from "@/types/profile";
 import { Input } from "@/components/ui/input";
 import { Search, Star } from "lucide-react";
 import { useStarredRepositories } from "@/app/hooks/use-starred-repositories";
+import { useRouter } from "next/navigation";
 
 interface StarredTabProps {
   userId: string;
@@ -14,7 +14,7 @@ interface StarredTabProps {
 export function StarredTab({ userId }: StarredTabProps) {
   const { repositories, isLoading } = useStarredRepositories(userId);
   const [searchQuery, setSearchQuery] = useState("");
-
+  const router = useRouter();
   const filteredRepos = repositories.filter(
     (repo: Repository) =>
       repo.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -59,9 +59,9 @@ export function StarredTab({ userId }: StarredTabProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
             >
-              <Link href={`/${repo.owner}/${repo.name}`}>
+              <div onClick={() => router.push(`/${repo.owner}/${repo.name}`)}>
                 <RepositoryCard {...repo} />
-              </Link>
+              </div>
             </motion.div>
           ))}
 

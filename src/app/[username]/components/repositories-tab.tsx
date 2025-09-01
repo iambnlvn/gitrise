@@ -8,6 +8,7 @@ import { Repository, Profile } from "@/types/profile";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { useRepositories } from "@/app/hooks/use-repositories";
+import { useRouter } from "next/navigation";
 
 interface RepositoriesTabProps {
   user: Profile;
@@ -17,7 +18,7 @@ interface RepositoriesTabProps {
 export function RepositoriesTab({ user, isOwnProfile }: RepositoriesTabProps) {
   const { repositories, isLoading } = useRepositories(user.id);
   const [searchQuery, setSearchQuery] = useState("");
-
+  const router = useRouter();
   const filteredRepos = repositories.filter(
     (repo: Repository) =>
       repo.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -70,9 +71,9 @@ export function RepositoriesTab({ user, isOwnProfile }: RepositoriesTabProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
             >
-              <Link href={`/${repo.owner}/${repo.name}`}>
+              <div onClick={() => router.push(`/${repo.owner}/${repo.name}`)}>
                 <RepositoryCard {...repo} />
-              </Link>
+              </div>
             </motion.div>
           ))}
 
