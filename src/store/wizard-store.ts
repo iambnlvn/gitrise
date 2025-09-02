@@ -1,7 +1,7 @@
+import { INITIAL_WIZARD_DATA } from "@/app/wizard/components/constants";
+import { WizardData } from "@/app/wizard/components/types";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { WizardData } from "../wizard/components/types";
-import { INITIAL_WIZARD_DATA } from "../wizard/components/constants";
 
 interface WizardStore {
   currentStep: number;

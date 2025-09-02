@@ -4,7 +4,7 @@ import { RepositoryCard } from "@/components/layout/repository-card";
 import { Repository } from "@/types/profile";
 import { Input } from "@/components/ui/input";
 import { Search, Star } from "lucide-react";
-import { useStarredRepositories } from "@/app/hooks/use-starred-repositories";
+import { useStarredRepositories } from "@/hooks/use-starred-repositories";
 import { useRouter } from "next/navigation";
 
 interface StarredTabProps {

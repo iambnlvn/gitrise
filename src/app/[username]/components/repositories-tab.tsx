@@ -7,7 +7,7 @@ import { Repository, Profile } from "@/types/profile";
 
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
-import { useRepositories } from "@/app/hooks/use-repositories";
+import { useRepositories } from "@/hooks/use-repositories";
 import { useRouter } from "next/navigation";
 
 interface RepositoriesTabProps {

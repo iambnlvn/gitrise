@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Activity, Book, Star } from "lucide-react";
 import { UserProfileProps } from "@/types/profile";
-import { useActivityData } from "@/app/hooks/use-activity-data";
+import { useActivityData } from "@/hooks/use-activity-data";
 import { ProfileSidebar } from "./profile-sidebar";
 import { RepositoriesTab } from "./repositories-tab";
 import { StarredTab } from "./starred-tab";

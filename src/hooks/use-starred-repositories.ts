@@ -1,30 +1,30 @@
 import { useState, useEffect } from "react";
 import { Repository } from "@/types/profile";
-import { mockRepositories } from "../dashboard/constants/constants";
+import { starredRepositories } from "../app/[username]/mock/data";
 
-export function useRepositories(userId: string) {
+export function useStarredRepositories(userId: string) {
   const [repositories, setRepositories] = useState<Repository[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    const loadRepositories = async () => {
+    const loadStarredRepositories = async () => {
       try {
         setIsLoading(true);
-
-        // For demo purposes, use mock data with a delay
-        await new Promise((resolve) => setTimeout(resolve, 500));
-        setRepositories(mockRepositories);
+        await new Promise((resolve) => setTimeout(resolve, 700));
+        setRepositories(starredRepositories);
       } catch (err) {
         setError(
-          err instanceof Error ? err : new Error("Failed to load repositories"),
+          err instanceof Error
+            ? err
+            : new Error("Failed to load starred repositories"),
         );
       } finally {
         setIsLoading(false);
       }
     };
 
-    loadRepositories();
+    loadStarredRepositories();
   }, [userId]);
 
   return { repositories, isLoading, error };
