@@ -22,7 +22,7 @@ import {
   Star,
 } from "lucide-react";
 import { useState } from "react";
-import { useWizardStore } from "@/app/store/wizard-store";
+import { useWizardStore } from "@/store/wizard-store";
 
 const THEMES = [
   {

@@ -15,7 +15,7 @@ import {
   TOOLS,
 } from "../constants";
 import { Badge } from "@/components/ui/badge";
-import { useWizardStore } from "../../../store/wizard-store";
+
 import {
   Award,
   Briefcase,
@@ -25,6 +25,7 @@ import {
   Settings,
   Star,
 } from "lucide-react";
+import { useWizardStore } from "@/store/wizard-store";
 
 const DeveloperProfileStep = () => {
   const { data, updateField, toggleArrayItem } = useWizardStore();

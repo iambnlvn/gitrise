@@ -11,8 +11,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Zap, Target, Code, Users, Star } from "lucide-react";
-import { useWizardStore } from "@/app/store/wizard-store";
+
 import { GOALS, INTERESTS, PROJECT_TYPES, TEAM_SIZES } from "../constants";
+import { useWizardStore } from "@/store/wizard-store";
 
 export function InterestsGoalsStep() {
   const { data, updateField: updateData, toggleArrayItem } = useWizardStore();

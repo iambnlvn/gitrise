@@ -2,7 +2,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { MapPin, Building, Globe } from "lucide-react";
-import { useWizardStore } from "@/app/store/wizard-store";
+import { useWizardStore } from "@/store/wizard-store";
 
 export function PersonalInfoStep() {
   const { data, updateField } = useWizardStore();

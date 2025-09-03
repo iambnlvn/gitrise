@@ -1,6 +1,6 @@
 "use client";
 
-import { useWizardStore } from "../store/wizard-store";
+import { useWizardStore } from "@/store/wizard-store";
 import { WizardData } from "./components/types";
 import { WizardLayout } from "./components/wizard-layout";
 

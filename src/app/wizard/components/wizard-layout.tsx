@@ -9,7 +9,7 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { OnboardingWizardProps } from "./types";
-import { useWizardStore } from "@/app/store/wizard-store";
+import { useWizardStore } from "@/store/wizard-store";
 import { STEPS } from "./constants";
 import { PersonalInfoStep } from "./steps/personal-info-step";
 import DeveloperProfileStep from "@/app/wizard/components/steps/dev-profile-step";
