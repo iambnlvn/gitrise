@@ -2,6 +2,8 @@ import type React from "react";
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
+import { Header } from "@/components/layout/header";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -21,7 +23,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={dmSans.variable}>
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-sans antialiased">
+        <Header />
+        <main> {children}</main>
+
+        <Toaster />
+      </body>
     </html>
   );
 }

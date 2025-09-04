@@ -1,4 +1,3 @@
-import { Header } from "@/components/layout/header";
 import { ProtectedRoute } from "@/components/layout/protected-route";
 import { UserProfile } from "./components/user-profile";
 import { createClient } from "@/utils/supabase/server";
@@ -43,7 +42,6 @@ export default async function UserProfilePage({
   return (
     <ProtectedRoute>
       <div className="bg-background min-h-screen">
-        <Header />
         <UserProfile user={mockUser} isOwnProfile={isOwnProfile} />
       </div>
     </ProtectedRoute>
