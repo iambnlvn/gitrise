@@ -9,6 +9,7 @@ import { SettingsSection } from "../types";
 import { User } from "@supabase/supabase-js";
 import { ProfileSection } from "./profile-section";
 import { AppearanceSettings } from "./appearance-settings";
+import { NotificationsSettings } from "./notification-settings";
 export function SettingsPage({ user }: { user: User }) {
   const [activeSection, setActiveSection] =
     useState<SettingsSection>("profile");
@@ -36,6 +37,8 @@ export function SettingsPage({ user }: { user: User }) {
         return <ProfileSection user={user} />;
       case "appearance":
         return <AppearanceSettings />;
+      case "notifications":
+        return <NotificationsSettings />;
     }
   };
 
