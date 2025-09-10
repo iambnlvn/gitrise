@@ -11,6 +11,7 @@ import { ProfileSection } from "./profile-section";
 import { AppearanceSettings } from "./appearance-settings";
 import { NotificationsSettings } from "./notification-settings";
 import { SecuritySettings } from "./security-settings";
+import { BillingSettings } from "./billing-settings";
 export function SettingsPage({ user }: { user: User }) {
   const [activeSection, setActiveSection] =
     useState<SettingsSection>("profile");
@@ -42,6 +43,8 @@ export function SettingsPage({ user }: { user: User }) {
         return <NotificationsSettings />;
       case "security":
         return <SecuritySettings />;
+      case "billing":
+        return <BillingSettings />;
     }
   };
 
