@@ -12,7 +12,7 @@ type CurrentPlanCardProps = {
 export function CurrentPlanCard({ onChangePlan }: CurrentPlanCardProps) {
   return (
     <Card className="border-[#947bd3]/20 bg-gradient-to-br from-[#947bd3]/10 to-[#b9a5e3]/5 p-6 transition-all duration-200 hover:shadow-lg hover:shadow-[#947bd3]/10">
-      <div className="mb-4 flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
+      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
         <div>
           <div className="mb-2 flex items-center gap-2">
             <h3 className="text-2xl font-bold">Pro Plan</h3>
@@ -31,7 +31,7 @@ export function CurrentPlanCard({ onChangePlan }: CurrentPlanCardProps) {
           Change Plan
         </Button>
       </div>
-      <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
+      <div className="mt-1 grid grid-cols-1 gap-4 md:grid-cols-3">
         <div className="flex items-center gap-3">
           <Users className="size-5 text-[#947bd3]" />
           <div>

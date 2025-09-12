@@ -82,3 +82,5 @@ export type Plan = {
   features: string[];
   current: boolean;
 };
+
+export type CardType = "visa" | "mastercard" | "amex" | "discover" | "unknown";
