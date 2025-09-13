@@ -70,6 +70,23 @@ const cardSchema = z.object({
 
 export type CardFormData = z.infer<typeof cardSchema>;
 
+const formatters = {
+  cardNumber: (value: string) => {
+    const cleaned = value.replace(/\s/g, "");
+    const chunks = cleaned.match(/.{1,4}/g) || [];
+    return chunks.join(" ").substring(0, 19);
+  },
+  expiryDate: (value: string) => {
+    const cleaned = value.replace(/\D/g, "");
+    if (cleaned.length >= 2) {
+      return `${cleaned.substring(0, 2)}/${cleaned.substring(2, 4)}`;
+    }
+    return cleaned;
+  },
+  cvc: (value: string) => value.replace(/\D/g, "").substring(0, 4),
+  cardName: (value: string) => value.toUpperCase(),
+} as const;
+
 export function AddPaymentDialog({
   open,
   onOpenChange,
@@ -87,52 +104,25 @@ export function AddPaymentDialog({
   >({});
   const [isPending, startTransition] = useTransition();
 
-  const formatCardNumber = (value: string) => {
-    const cleaned = value.replace(/\s/g, "");
-    const chunks = cleaned.match(/.{1,4}/g) || [];
-    return chunks.join(" ").substring(0, 19);
+  const handleFieldChange = (field: keyof CardFormData, value: string) => {
+    const formatter = formatters[field];
+    const formattedValue = formatter ? formatter(value) : value;
+
+    setCardForm((prev) => ({ ...prev, [field]: formattedValue }));
+    setCardErrors((prev) => ({ ...prev, [field]: "" }));
   };
 
-  const formatExpiryDate = (value: string) => {
-    const cleaned = value.replace(/\D/g, "");
-    if (cleaned.length >= 2) {
-      return `${cleaned.substring(0, 2)}/${cleaned.substring(2, 4)}`;
-    }
-    return cleaned;
-  };
-
-  const validateField = (field: keyof CardFormData, value: string) => {
+  const handleFieldBlur = (field: keyof CardFormData) => {
+    setFocusedInput(null);
     try {
-      cardSchema.shape[field].parse(value);
-      return "";
+      cardSchema.shape[field].parse(cardForm[field]);
+      setCardErrors((prev) => ({ ...prev, [field]: "" }));
     } catch (error) {
       if (error instanceof z.ZodError) {
-        return error.issues[0]?.message || "";
+        const errorMessage = error.issues[0]?.message || "";
+        setCardErrors((prev) => ({ ...prev, [field]: errorMessage }));
       }
-      return "";
     }
-  };
-
-  const handleCardNumberChange = (value: string) => {
-    const formatted = formatCardNumber(value);
-    setCardForm({ ...cardForm, cardNumber: formatted });
-    setCardErrors({ ...cardErrors, cardNumber: "" });
-  };
-
-  const handleExpiryDateChange = (value: string) => {
-    const formatted = formatExpiryDate(value);
-    setCardForm({ ...cardForm, expiryDate: formatted });
-    setCardErrors({ ...cardErrors, expiryDate: "" });
-  };
-  const handleCVCChange = (value: string) => {
-    const cleaned = value.replace(/\D/g, "").substring(0, 4);
-    setCardForm({ ...cardForm, cvc: cleaned });
-    setCardErrors({ ...cardErrors, cvc: "" });
-  };
-
-  const handleCardNameChange = (value: string) => {
-    setCardForm({ ...cardForm, cardName: value });
-    setCardErrors({ ...cardErrors, cardName: "" });
   };
 
   const isCardFormValid = () => {
@@ -187,6 +177,12 @@ export function AddPaymentDialog({
     resetForm();
   };
 
+  const getInputClassName = (field: keyof CardFormData) => {
+    return `transition-all duration-200 ${
+      focusedInput === field ? "scale-105 ring-2 ring-[#7C3AED]" : ""
+    } ${cardErrors[field] ? "border-red-500" : ""}`;
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-lg">
@@ -207,24 +203,14 @@ export function AddPaymentDialog({
             <Label htmlFor="cardNumber">Card Number</Label>
             <Input
               id="cardNumber"
+              inputMode="numeric"
               placeholder="1234 5678 9012 3456"
               value={cardForm.cardNumber}
-              onChange={(e) => handleCardNumberChange(e.target.value)}
+              onChange={(e) => handleFieldChange("cardNumber", e.target.value)}
               onFocus={() => setFocusedInput("cardNumber")}
-              onBlur={() => {
-                setFocusedInput(null);
-                const error = validateField("cardNumber", cardForm.cardNumber);
-                setCardErrors({
-                  ...cardErrors,
-                  cardNumber: error,
-                });
-              }}
+              onBlur={() => handleFieldBlur("cardNumber")}
               maxLength={19}
-              className={`transition-all duration-200 ${
-                focusedInput === "cardNumber"
-                  ? "scale-105 ring-2 ring-[#7C3AED]"
-                  : ""
-              } ${cardErrors.cardNumber ? "border-red-500" : ""}`}
+              className={getInputClassName("cardNumber")}
             />
             {cardErrors.cardNumber && (
               <p className="animate-in fade-in slide-in-from-top-1 text-xs text-red-500">
@@ -239,23 +225,10 @@ export function AddPaymentDialog({
               id="cardName"
               placeholder="JOHN DOE"
               value={cardForm.cardName}
-              onChange={(e) =>
-                handleCardNameChange(e.target.value.toUpperCase())
-              }
+              onChange={(e) => handleFieldChange("cardName", e.target.value)}
               onFocus={() => setFocusedInput("cardName")}
-              onBlur={() => {
-                setFocusedInput(null);
-                const error = validateField("cardName", cardForm.cardName);
-                setCardErrors({
-                  ...cardErrors,
-                  cardName: error,
-                });
-              }}
-              className={`transition-all duration-200 ${
-                focusedInput === "cardName"
-                  ? "scale-105 ring-2 ring-[#7C3AED]"
-                  : ""
-              } ${cardErrors.cardName ? "border-red-500" : ""}`}
+              onBlur={() => handleFieldBlur("cardName")}
+              className={getInputClassName("cardName")}
             />
             {cardErrors.cardName && (
               <p className="animate-in fade-in slide-in-from-top-1 text-xs text-red-500">
@@ -271,25 +244,13 @@ export function AddPaymentDialog({
                 id="expiryDate"
                 placeholder="MM/YY"
                 value={cardForm.expiryDate}
-                onChange={(e) => handleExpiryDateChange(e.target.value)}
+                onChange={(e) =>
+                  handleFieldChange("expiryDate", e.target.value)
+                }
                 onFocus={() => setFocusedInput("expiryDate")}
-                onBlur={() => {
-                  setFocusedInput(null);
-                  const error = validateField(
-                    "expiryDate",
-                    cardForm.expiryDate,
-                  );
-                  setCardErrors({
-                    ...cardErrors,
-                    expiryDate: error,
-                  });
-                }}
+                onBlur={() => handleFieldBlur("expiryDate")}
                 maxLength={5}
-                className={`transition-all duration-200 ${
-                  focusedInput === "expiryDate"
-                    ? "scale-105 ring-2 ring-[#7C3AED]"
-                    : ""
-                } ${cardErrors.expiryDate ? "border-red-500" : ""}`}
+                className={getInputClassName("expiryDate")}
               />
               {cardErrors.expiryDate && (
                 <p className="animate-in fade-in slide-in-from-top-1 text-xs text-red-500">
@@ -303,23 +264,12 @@ export function AddPaymentDialog({
                 id="cvc"
                 placeholder="123"
                 value={cardForm.cvc}
-                onChange={(e) => handleCVCChange(e.target.value)}
+                onChange={(e) => handleFieldChange("cvc", e.target.value)}
                 onFocus={() => setFocusedInput("cvc")}
-                onBlur={() => {
-                  setFocusedInput(null);
-                  const error = validateField("cvc", cardForm.cvc);
-                  setCardErrors({
-                    ...cardErrors,
-                    cvc: error,
-                  });
-                }}
+                onBlur={() => handleFieldBlur("cvc")}
                 maxLength={4}
                 type="password"
-                className={`transition-all duration-200 ${
-                  focusedInput === "cvc"
-                    ? "scale-105 ring-2 ring-[#7C3AED]"
-                    : ""
-                } ${cardErrors.cvc ? "border-red-500" : ""}`}
+                className={getInputClassName("cvc")}
               />
               {cardErrors.cvc && (
                 <p className="animate-in fade-in slide-in-from-top-1 text-xs text-red-500">
