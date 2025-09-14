@@ -86,14 +86,39 @@ const CardFront = ({
   cardType: CardType;
 }) => (
   <div
-    className={`group absolute inset-0 overflow-hidden rounded-2xl shadow-2xl transition-all duration-300 backface-hidden hover:scale-[1.02]`}
+    className={`group pointer-events-none absolute inset-0 overflow-hidden rounded-2xl shadow-2xl transition-all duration-300 backface-hidden hover:scale-[1.02]`}
     role="img"
     aria-label={`Front of ${cardType} credit card ending in ${cardData.cardNumber.slice(-4) || "0000"}`}
   >
     {/* Glassmorphic bg */}
     <div
-      className={`absolute inset-0 bg-gradient-to-br ${gradient} backdrop-blur-xl`}
+      className={`absolute inset-0 bg-gradient-to-br ${gradient} animate-gradient backdrop-blur-xl`}
+      style={{
+        backgroundSize: "200% 200%",
+      }}
     />
+    <div className="absolute inset-0 overflow-hidden">
+      <div
+        className="animate-move-lr absolute size-20 rounded-full bg-white/10 backdrop-blur-md"
+        style={{ top: "20%", left: "10%" }}
+      />
+      <div
+        className="animate-move-rl absolute size-32 rounded-full bg-white/10 backdrop-blur-md"
+        style={{ bottom: "15%", right: "10%" }}
+      />
+      <div
+        className="animate-move-tb absolute size-16 rounded-full bg-white/10 backdrop-blur-md"
+        style={{ top: "10%", left: "45%" }}
+      />
+      <div
+        className="animate-move-bt absolute size-24 rounded-full bg-white/5 backdrop-blur-sm"
+        style={{ bottom: "15%", left: "30%" }}
+      />
+      <div
+        className="animate-move-diag1 absolute size-28 rounded-full bg-white/5 backdrop-blur-sm"
+        style={{ top: "20%", right: "15%" }}
+      />
+    </div>
 
     {/* Glass overlay */}
     <div className="absolute inset-0 bg-transparent backdrop-blur-sm" />
@@ -149,14 +174,35 @@ const CardFront = ({
 
 const CardBack = ({ cvc, gradient }: { cvc: string; gradient: string }) => (
   <div
-    className={`group absolute inset-0 rotate-y-180 overflow-hidden rounded-2xl shadow-2xl backface-hidden`}
+    className={`group pointer-events-none absolute inset-0 rotate-y-180 overflow-hidden rounded-2xl shadow-2xl backface-hidden`}
     role="img"
     aria-label={`Back of credit card with security code ${cvc ? "entered" : "not entered"}`}
   >
     {/* Glassmorphic bg */}
     <div
-      className={`absolute inset-0 bg-gradient-to-br ${gradient} backdrop-blur-xl`}
+      className={`absolute inset-0 bg-gradient-to-br ${gradient} animate-gradient backdrop-blur-xl`}
+      style={{
+        backgroundSize: "200% 200%",
+      }}
     />
+    <div className="absolute inset-0 overflow-hidden">
+      <div
+        className="animate-move-rl absolute size-20 rounded-full bg-white/10 backdrop-blur-md"
+        style={{ top: "25%", right: "10%" }}
+      />
+      <div
+        className="animate-move-lr absolute size-28 rounded-full bg-white/10 backdrop-blur-md"
+        style={{ bottom: "15%", left: "10%" }}
+      />
+      <div
+        className="animate-move-tb absolute size-24 rounded-full bg-white/5 backdrop-blur-sm"
+        style={{ top: "15%", left: "30%" }}
+      />
+      <div
+        className="animate-move-diag2 absolute size-16 rounded-full bg-white/5 backdrop-blur-sm"
+        style={{ top: "50%", right: "15%" }}
+      />
+    </div>
 
     <div className="relative z-10 flex h-full flex-col">
       <div
