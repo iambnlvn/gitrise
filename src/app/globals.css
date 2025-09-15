@@ -114,12 +114,6 @@
 }
 @theme {
   --animate-gradient: gradient 15s ease infinite;
-  --animate-move-lr: moveLR 15s linear infinite;
-  --animate-move-rl: moveRL 18s linear infinite;
-  --animate-move-tb: moveTB 12s linear infinite;
-  --animate-move-bt: moveBT 20s linear infinite;
-  --animate-move-diag1: moveDiag1 25s linear infinite;
-  --animate-move-diag2: moveDiag2 22s linear infinite;
 }
 @layer base {
   * {
@@ -155,95 +149,5 @@
   }
   100% {
     background-position: 0% 50%;
-  }
-}
-
-@keyframes moveLR {
-  0% {
-    transform: translateX(0%);
-  }
-  50% {
-    transform: translateX(600%);
-  }
-  /* 50.01% {
-    transform: translateX(-120%);
-  } */
-  100% {
-    transform: translateX(0%);
-  }
-}
-
-@keyframes moveRL {
-  0% {
-    transform: translateX(0%);
-  }
-  50% {
-    transform: translateX(-60%);
-  }
-  /* 50.01% {
-    transform: translateX(120%);
-  } */
-  100% {
-    transform: translateX(0%);
-  }
-}
-
-@keyframes moveTB {
-  0% {
-    transform: translateY(0%);
-  }
-  50% {
-    transform: translateY(70%);
-  }
-  /* 50.01% {
-    transform: translateY(-100%);
-  } */
-  100% {
-    transform: translateY(0%);
-  }
-}
-
-@keyframes moveBT {
-  0% {
-    transform: translateY(0%);
-  }
-  50% {
-    transform: translateY(-70%);
-  }
-  /* 50.01% {
-    transform: translateY(100%);
-  } */
-  100% {
-    transform: translateY(0%);
-  }
-}
-
-@keyframes moveDiag1 {
-  0% {
-    transform: translate(0%, 0%);
-  }
-  50% {
-    transform: translate(60%, 70%);
-  }
-  /* 50.01% {
-    transform: translate(-120%, -100%);
-  } */
-  100% {
-    transform: translate(0%, 0%);
-  }
-}
-
-@keyframes moveDiag2 {
-  0% {
-    transform: translate(0%, 0%);
-  }
-  50% {
-    transform: translate(-60%, 70%);
-  }
-  /* 50.01% {
-    transform: translate(120%, -100%);
-  } */
-  100% {
-    transform: translate(0%, 0%);
   }
 }
