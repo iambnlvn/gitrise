@@ -36,7 +36,7 @@ export function SettingsSidebar({
   onSectionChange,
 }: SettingsSidebarProps) {
   return (
-    <aside className="border-border bg-card fixed z-20 h-screen w-64 border-r">
+    <aside className="border-border bg-card fixed z-20 hidden h-screen border-r md:block md:w-64">
       <div className="flex h-full flex-col">
         {/* Navigation */}
         <nav className="flex-1 overflow-y-auto py-4">
