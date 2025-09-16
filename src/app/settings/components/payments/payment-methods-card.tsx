@@ -1,10 +1,9 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { CreditCard, Plus, Trash2 } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Plus, MoreVertical } from "lucide-react";
 import { PaymentMethod } from "../../types";
+import { PaymentCardPreview } from "./payment-card-preview";
 
 type PaymentMethodsCardProps = {
   paymentMethods: PaymentMethod[];
@@ -16,63 +15,48 @@ type PaymentMethodsCardProps = {
 export function PaymentMethodsCard({
   paymentMethods,
   onAddMethod,
-  onSetDefault,
-  onDelete,
 }: PaymentMethodsCardProps) {
   return (
-    <Card className="bg-card border-border p-6 transition-all duration-200 hover:shadow-lg hover:shadow-[#947bd3]/5">
-      <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold">Payment Methods</h3>
-        <Button
-          variant="outline"
-          size="sm"
-          className="gap-2 bg-transparent transition-all duration-200"
-          onClick={onAddMethod}
-        >
-          <Plus className="size-4" />
-          Add Method
-        </Button>
-      </div>
-      <div className="space-y-3">
-        {paymentMethods.map((method) => (
-          <div
-            key={method.id}
-            className="border-border bg-accent/50 hover:bg-accent flex items-center gap-4 rounded-lg border p-4 transition-all duration-200"
+    <div className="w-full space-y-8">
+      <div className="space-y-4">
+        <h2 className="text-foreground text-2xl font-semibold">
+          Payment Method
+        </h2>
+        <div className="grid gap-6 md:grid-cols-2">
+          {paymentMethods.length > 0 && (
+            <div className="relative">
+              <PaymentCardPreview
+                cardData={{
+                  cardNumber: "6020010033566888",
+                  cardName: "David Martinez",
+                  expiryDate: "12/27",
+                  cvc: "129",
+                }}
+                isFlipped={false}
+              />
+              <button className="absolute top-2 right-1.5 rounded-full bg-white/20 p-2 transition-colors hover:bg-white/30 md:top-2 md:right-8">
+                <MoreVertical size={20} className="text-white" />{" "}
+                {/* TODO: Implement edit and delete functionality */}
+              </button>
+            </div>
+          )}
+
+          <Card
+            className="flex h-56 w-96 cursor-pointer items-center justify-center border-2 border-dashed border-slate-300 shadow-lg transition-colors hover:border-slate-400 dark:border-slate-600 dark:hover:border-slate-500"
+            onClick={onAddMethod}
           >
-            <CreditCard className="text-muted-foreground size-8" />
-            <div className="flex-1">
-              <p className="font-medium">
-                {method.brand} ending in {method.last4}
+            <CardContent className="flex flex-col items-center justify-center gap-3">
+              <Plus size={32} className="text-muted-foreground" />
+              <p className="text-foreground text-lg font-semibold">
+                Add New Card
               </p>
               <p className="text-muted-foreground text-sm">
-                Expires {method.expiryMonth}/{method.expiryYear}
+                Add a new payment method
               </p>
-            </div>
-            {method.isDefault ? (
-              <Badge variant="secondary">Default</Badge>
-            ) : (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => onSetDefault(method.id)}
-                className="transition-all duration-200"
-              >
-                Set Default
-              </Button>
-            )}
-            {!method.isDefault && (
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => onDelete(method.id)}
-                className="hover:text-destructive transition-all duration-200"
-              >
-                <Trash2 className="size-4" />
-              </Button>
-            )}
-          </div>
-        ))}
+            </CardContent>
+          </Card>
+        </div>
       </div>
-    </Card>
+    </div>
   );
 }

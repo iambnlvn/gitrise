@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from "react";
 import { CreditCard } from "lucide-react";
 import { CardType } from "../../types";
 import { CardFormData } from "./add-payment-dialog";
+import { CARD_GRADIENTS } from "./constants";
 // TODO: get fancy with this and make the card onClick switch to the appropriate input field
 
 interface PaymentCardPreviewProps {
@@ -11,13 +12,6 @@ interface PaymentCardPreviewProps {
   isFlipped: boolean;
 }
 
-const CARD_GRADIENTS: Record<CardType, string> = {
-  visa: "from-blue-600/90 via-blue-700/80 to-blue-800/90",
-  mastercard: "from-slate-800/95 via-slate-900/90 to-black/95",
-  amex: "from-teal-600/95 via-teal-700/90 to-teal-800/95",
-  discover: "from-orange-500/95 via-orange-600/90 to-red-700/95",
-  unknown: "from-gray-700/95 via-gray-800/90 to-gray-900/95",
-};
 /**
  * Formats a credit card number string with proper spacing and masking
  * based on the card type.
@@ -303,7 +297,7 @@ const CardBack = ({ cvc, gradient }: { cvc: string; gradient: string }) => (
             For customer service, call the number on the front of your card.
           </p>
           <p className="text-[10px]">
-            This card is issued by Example Bank pursuant to license by
+            This card is issued by Arasaka Bank pursuant to license by
             Visa/Mastercard. Use of this card constitutes acceptance of the
             cardholder agreement.
           </p>
