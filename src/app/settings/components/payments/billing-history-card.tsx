@@ -3,8 +3,33 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Download, Loader2 } from "lucide-react";
+import {
+  Download,
+  Loader2,
+  CheckCircle,
+  AlertCircle,
+  Clock,
+} from "lucide-react";
 import { Invoice } from "../../types";
+
+const INVOICE_STATUS_CONFIG = {
+  paid: {
+    color: "border-green-500/20 bg-green-500/10 text-green-500",
+    icon: CheckCircle,
+  },
+  pending: {
+    color: "border-yellow-500/20 bg-yellow-500/10 text-yellow-500",
+    icon: Clock,
+  },
+  failed: {
+    color: "border-red-500/20 bg-red-500/10 text-red-500",
+    icon: AlertCircle,
+  },
+  default: {
+    color: "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300",
+    icon: null,
+  },
+};
 
 type BillingHistoryCardProps = {
   invoices: Invoice[];
@@ -12,65 +37,126 @@ type BillingHistoryCardProps = {
   onDownload: (invoiceId: string) => void;
 };
 
+const StatusBadge = ({ status }: { status: string }) => {
+  const config =
+    INVOICE_STATUS_CONFIG[status as keyof typeof INVOICE_STATUS_CONFIG] ||
+    INVOICE_STATUS_CONFIG.default;
+
+  const Icon = config.icon;
+
+  return (
+    <Badge className={`flex w-fit items-center ${config.color} capitalize`}>
+      {Icon && <Icon className="mr-1 size-3" />} {status}
+    </Badge>
+  );
+};
+
+const InvoiceRow = ({
+  invoice,
+  isDownloading,
+  onDownload,
+}: {
+  invoice: Invoice;
+  isDownloading: string | null;
+  onDownload: (id: string) => void;
+}) => (
+  <tr
+    key={invoice.id}
+    className="border-b border-slate-200 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800"
+  >
+    <td className="text-foreground px-6 py-4 text-sm">{invoice.date}</td>
+    <td className="text-foreground px-6 py-4 text-sm">{invoice.description}</td>
+    <td className="text-foreground px-6 py-4 text-sm font-semibold">
+      ${invoice.amount.toFixed(2)}
+    </td>
+    <td className="px-6 py-4">
+      <StatusBadge status={invoice.status} />
+    </td>
+    <td className="px-6 py-4">
+      {invoice.status === "paid" ? (
+        <DownloadButton
+          invoiceId={invoice.id}
+          isLoading={isDownloading === invoice.id}
+          onDownload={onDownload}
+        />
+      ) : (
+        <span className="text-muted-foreground text-sm italic">
+          No Action Available
+        </span>
+      )}
+    </td>
+  </tr>
+);
+
+const DownloadButton = ({
+  invoiceId,
+  isLoading,
+  onDownload,
+}: {
+  invoiceId: string;
+  isLoading: boolean;
+  onDownload: (id: string) => void;
+}) => (
+  <button
+    className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 disabled:opacity-50 dark:text-blue-400 dark:hover:text-blue-300"
+    onClick={() => onDownload(invoiceId)}
+    disabled={isLoading}
+    aria-label="Download invoice"
+  >
+    {isLoading ? (
+      <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+    ) : (
+      <Download size={16} aria-hidden="true" />
+    )}
+    Download Invoice
+  </button>
+);
+
 export function BillingHistoryCard({
   invoices,
   isDownloading,
   onDownload,
 }: BillingHistoryCardProps) {
   return (
-    <Card className="bg-card border-border p-6 transition-all duration-200 hover:shadow-lg hover:shadow-[#947bd3]/5">
+    <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold">Billing History</h3>
-        <Button
-          variant="outline"
-          size="sm"
-          className="bg-transparent transition-all duration-200"
-        >
-          View All
+        <h2 className="text-foreground text-2xl font-semibold">
+          Billing History
+        </h2>
+        <Button variant="outline" size="sm">
+          Filter
         </Button>
       </div>
-      <div className="space-y-3">
-        {invoices.map((invoice) => (
-          <div
-            key={invoice.id}
-            className="border-border bg-accent/50 hover:bg-accent flex flex-col justify-between gap-3 rounded-lg border p-3 transition-all duration-200 sm:flex-row sm:items-center"
-          >
-            <div className="flex-1">
-              <p className="font-medium">{invoice.description}</p>
-              <p className="text-muted-foreground text-sm">{invoice.date}</p>
-            </div>
-            <div className="flex items-center gap-3">
-              <Badge
-                className={
-                  invoice.status === "paid"
-                    ? "border-green-500/20 bg-green-500/10 text-green-500"
-                    : invoice.status === "pending"
-                      ? "border-yellow-500/20 bg-yellow-500/10 text-yellow-500"
-                      : "border-red-500/20 bg-red-500/10 text-red-500"
-                }
-              >
-                {invoice.status}
-              </Badge>
-              <span className="font-semibold">
-                ${invoice.amount.toFixed(2)}
-              </span>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => onDownload(invoice.id)}
-                disabled={isDownloading === invoice.id}
-                className="transition-all duration-200"
-              >
-                {isDownloading === invoice.id ? (
-                  <Loader2 className="size-4 animate-spin" />
-                ) : (
-                  <Download className="size-4" />
+      <Card className="overflow-hidden border-0 shadow-lg">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-slate-200">
+                {["Date", "Description", "Amount", "Status", "Action"].map(
+                  (header) => (
+                    <th
+                      key={header}
+                      className="text-foreground px-6 py-4 text-left text-sm font-semibold"
+                    >
+                      {header}
+                    </th>
+                  ),
                 )}
-              </Button>
-            </div>
-          </div>
-        ))}
-      </div>
-    </Card>
+              </tr>
+            </thead>
+            <tbody>
+              {invoices.map((invoice) => (
+                <InvoiceRow
+                  key={invoice.id}
+                  invoice={invoice}
+                  isDownloading={isDownloading}
+                  onDownload={onDownload}
+                />
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Card>
+    </div>
   );
 }
