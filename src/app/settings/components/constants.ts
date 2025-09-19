@@ -1,4 +1,4 @@
-import { Invoice, PaymentMethod, Plan } from "../types";
+import { Invoice, PaymentMethod } from "../types";
 
 export const INITIAL_PAYMENT_METHODS: PaymentMethod[] = [
   {
@@ -48,42 +48,44 @@ export const INVOICES: Invoice[] = [
   },
 ];
 
-export const PLANS: Plan[] = [
+export const PLANS = [
   {
-    name: "Free",
-    price: 0,
-    period: "forever",
-    features: [
-      "1 team member",
-      "10 GB storage",
-      "500 build minutes/month",
-      "Community support",
-    ],
-    current: false,
-  },
-  {
-    name: "Pro",
-    price: 20,
+    id: "starter",
+    name: "Starter",
+    price: 9,
     period: "month",
     features: [
-      "Unlimited team members",
-      "500 GB storage",
-      "3,000 build minutes/month",
-      "Priority support",
+      { name: "API Requests", value: "1,000/month" },
+      { name: "Storage", value: "1 GB" },
+      { name: "Build Minutes", value: "100/month" },
+      { name: "Support", value: "Community" },
     ],
-    current: true,
   },
   {
-    name: "Enterprise",
-    price: null,
-    period: "custom",
+    id: "pro",
+    name: "Pro",
+    price: 29,
+    period: "month",
     features: [
-      "Everything in Pro",
-      "Unlimited storage",
-      "Unlimited build minutes",
-      "24/7 dedicated support",
-      "SLA guarantee",
+      { name: "API Requests", value: "10,000/month" },
+      { name: "Storage", value: "5 GB" },
+      { name: "Build Minutes", value: "1,000/month" },
+      { name: "Support", value: "Priority Email" },
+      { name: "Analytics", value: "Advanced" },
+      { name: "Custom Domain", value: "Included" },
     ],
-    current: false,
+  },
+  {
+    id: "enterprise",
+    name: "Enterprise",
+    price: 99,
+    period: "month",
+    features: [
+      { name: "API Requests", value: "Unlimited" },
+      { name: "Storage", value: "100 GB" },
+      { name: "Build Minutes", value: "Unlimited" },
+      { name: "Support", value: "24/7 Phone & Email" },
+      { name: "Account Manager", value: "Dedicated" },
+    ],
   },
 ];
