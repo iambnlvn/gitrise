@@ -7,7 +7,6 @@ import { PaymentMethod } from "../types";
 import { UsageCard } from "./payments/usage-card";
 import { PaymentMethodsCard } from "./payments/payment-methods-card";
 import { BillingHistoryCard } from "./payments/billing-history-card";
-import { UpgradeCard } from "./payments/upgrade-card";
 import { ChangePlanDialog } from "./payments/change-plan-dialog";
 import { AddPaymentDialog } from "./payments/add-payment-dialog";
 import { INITIAL_PAYMENT_METHODS, INVOICES, PLANS } from "./constants";
@@ -100,8 +99,6 @@ export function BillingSettings() {
           isDownloading={isDownloading}
           onDownload={handleDownloadInvoice}
         />
-        {/* Note:this card is kinda euuuh, maybe remove it later*/}
-        <UpgradeCard />
         <ChangePlanDialog
           open={planModalOpen}
           onOpenChange={setPlanModalOpen}
