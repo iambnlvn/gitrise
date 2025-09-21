@@ -4,7 +4,6 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { PaymentMethod } from "../types";
-import { CurrentPlanCard } from "./payments/current-plan-card";
 import { UsageCard } from "./payments/usage-card";
 import { PaymentMethodsCard } from "./payments/payment-methods-card";
 import { BillingHistoryCard } from "./payments/billing-history-card";
@@ -12,14 +11,21 @@ import { UpgradeCard } from "./payments/upgrade-card";
 import { ChangePlanDialog } from "./payments/change-plan-dialog";
 import { AddPaymentDialog } from "./payments/add-payment-dialog";
 import { INITIAL_PAYMENT_METHODS, INVOICES, PLANS } from "./constants";
+import { BillingOverview } from "./payments/billing-overview";
 
 export function BillingSettings() {
   const [isDownloading, setIsDownloading] = useState<string | null>(null);
+  const [currentPlan, setCurrentPlan] = useState("pro");
+  const [planModalOpen, setPlanModalOpen] = useState(false);
   const [showAddPayment, setShowAddPayment] = useState(false);
-  const [showChangePlan, setShowChangePlan] = useState(false);
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>(
     INITIAL_PAYMENT_METHODS,
   );
+
+  const handleSelectPlan = (planId: string) => {
+    setCurrentPlan(planId);
+    setPlanModalOpen(false);
+  };
 
   const handleDownloadInvoice = (invoiceId: string) => {
     setIsDownloading(invoiceId);
@@ -68,9 +74,21 @@ export function BillingSettings() {
             Manage your subscription and billing information
           </p>
         </div>
-
-        <CurrentPlanCard onChangePlan={() => setShowChangePlan(true)} />
+        <h2 className="text-foreground text-2xl font-semibold">
+          Subscription Overview
+        </h2>
+        <BillingOverview
+          currentPlan={currentPlan}
+          plans={PLANS}
+          onChangePlan={() => setPlanModalOpen(true)}
+        />
+        <h2 className="text-foreground text-2xl font-semibold">
+          Usage Summary
+        </h2>
         <UsageCard />
+        <h2 className="text-foreground text-2xl font-semibold">
+          Payment Methods
+        </h2>
         <PaymentMethodsCard
           paymentMethods={paymentMethods}
           onAddMethod={() => setShowAddPayment(true)}
@@ -84,11 +102,12 @@ export function BillingSettings() {
         />
         {/* Note:this card is kinda euuuh, maybe remove it later*/}
         <UpgradeCard />
-
         <ChangePlanDialog
-          open={showChangePlan}
-          onOpenChange={setShowChangePlan}
+          open={planModalOpen}
+          onOpenChange={setPlanModalOpen}
+          onSelectPlan={handleSelectPlan}
           plans={PLANS}
+          currentPlan={currentPlan}
         />
         <AddPaymentDialog
           open={showAddPayment}
