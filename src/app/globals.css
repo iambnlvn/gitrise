@@ -37,6 +37,8 @@
   --sidebar-accent-foreground: #eff1f5;
   --sidebar-border: #ccd0da;
   --sidebar-ring: #8839ef;
+
+  --font-size-base: var(--base-font-size);
 }
 
 .dark {
@@ -150,4 +152,8 @@
   100% {
     background-position: 0% 50%;
   }
+}
+
+html {
+  font-size: var(--font-size-base);
 }

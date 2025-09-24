@@ -8,10 +8,11 @@ import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { SettingsSection } from "../types";
 import { User } from "@supabase/supabase-js";
 import { ProfileSection } from "./profile-section";
-import { AppearanceSettings } from "./appearance-settings";
+import { AppearanceSettings } from "./appearance/appearance-settings";
 import { NotificationsSettings } from "./notification-settings";
 import { SecuritySettings } from "./security-settings";
 import { BillingSettings } from "./billing-settings";
+
 export function SettingsPage({ user }: { user: User }) {
   const [activeSection, setActiveSection] =
     useState<SettingsSection>("profile");
