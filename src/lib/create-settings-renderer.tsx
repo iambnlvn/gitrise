@@ -10,79 +10,67 @@ import type {
   OptionConfig,
 } from "@/app/settings/components/shared/types";
 
+// interface CustomRendererComponent<TState = unknown> {
+//   config: SettingConfig<TState>;
+//   value: unknown;
+//   onChange: (value: unknown) => void;
+//   [key: string]: unknown;
+// }
+
+// type CustomRendererMap<TState = unknown> = Record<
+//   string,
+//   React.ComponentType<CustomRendererComponent<TState>>
+// >;
+
 /**
  * Custom renderer component interface.
- *
+ * 
  * Custom renderers receive the setting configuration, current value,
  * and a change handler. They can also receive additional props.
- *
+ * Map of custom renderers keyed by setting key or type.
+ * Factory function to create a type-safe setting renderer.
+ * 
+ * This factory creates a renderer component that handles both standard
+ * setting types (select, toggle) and custom setting types. Custom renderers
+ * can be provided for specific setting keys to override default behavior.
  * @template TState - Type of the settings state object
  * @property {SettingConfig<TState>} config - The setting configuration
  * @property {unknown} value - Current value from state
  * @property {function} onChange - Callback to update the value
- */
-interface CustomRendererComponent<TState = unknown> {
-  config: SettingConfig<TState>;
-  value: unknown;
-  onChange: (value: unknown) => void;
-  [key: string]: unknown;
+ * @template TState - Type of the settings state object
+ * @template TState - Type of the settings state object
+ * @example ```tsx
+// Create a renderer with custom components for specific settings
+const AppearanceRenderer = createSettingRenderer<AppearanceState>({
+  theme: ThemePicker,        // Custom theme picker
+  tableView: TableViewPicker  // Custom table view picker
+});
+
+// Use in your settings component
+function AppearanceSettings() {
+  const { settings, updateSetting } = useSettings(DEFAULT_STATE);
+
+  return (
+    <div>
+      {SETTING_GROUPS.map(group => (
+        <SettingCard key={group.id} {...group}>
+          {group.settings.map(setting => (
+            <AppearanceRenderer
+              key={setting.key as string}
+              config={setting}
+              value={settings[setting.key]}
+              onChange={updateSetting}
+              accentColor="purple-500"
+            />
+          ))}
+        </SettingCard>
+      ))}
+    </div>
+  );
 }
-
-/**
- * Map of custom renderers keyed by setting key or type.
- *
- * @template TState - Type of the settings state object
+```
  */
-type CustomRendererMap<TState = unknown> = Record<
-  string,
-  React.ComponentType<CustomRendererComponent<TState>>
->;
-
-/**
- * Factory function to create a type-safe setting renderer.
- *
- * This factory creates a renderer component that handles both standard
- * setting types (select, toggle) and custom setting types. Custom renderers
- * can be provided for specific setting keys to override default behavior.
- *
- * @template TState - Type of the settings state object
- * @param {CustomRendererMap<TState>} [customRenderers] - Map of custom renderers
- *
- * @example
- * ```tsx
- * // Create a renderer with custom components for specific settings
- * const AppearanceRenderer = createSettingRenderer<AppearanceState>({
- *   theme: ThemePicker,        // Custom theme picker
- *   tableView: TableViewPicker  // Custom table view picker
- * });
- *
- * // Use in your settings component
- * function AppearanceSettings() {
- *   const { settings, updateSetting } = useSettings(DEFAULT_STATE);
- *
- *   return (
- *     <div>
- *       {SETTING_GROUPS.map(group => (
- *         <SettingCard key={group.id} {...group}>
- *           {group.settings.map(setting => (
- *             <AppearanceRenderer
- *               key={setting.key as string}
- *               config={setting}
- *               value={settings[setting.key]}
- *               onChange={updateSetting}
- *               accentColor="purple-500"
- *             />
- *           ))}
- *         </SettingCard>
- *       ))}
- *     </div>
- *   );
- * }
- * ```
- */
-export function createSettingRenderer<TState extends Record<string, unknown>>(
-  _customRenderers?: CustomRendererMap<TState>,
-) {
+export function createSettingRenderer<TState>() {
   /**
    * The actual renderer component.
    *
