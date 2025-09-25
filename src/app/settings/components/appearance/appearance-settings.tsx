@@ -3,25 +3,12 @@
 
 import { SettingCard, SettingHeader, SettingActions } from "../shared";
 
-import { ThemePicker } from "./theme-picker";
-import { TableViewPicker } from "./table-view-picker";
 import type { AppearanceState } from "./appearance-types";
 import { DEFAULT_STATE, SETTING_GROUPS } from "./constants";
 import { createSettingRenderer } from "@/lib/create-settings-renderer";
 import { useSettings } from "@/hooks/use-settings";
 
-const SettingRenderer = createSettingRenderer({
-  theme: ({ config, value, onChange }: any) => (
-    <ThemePicker options={config.options} value={value} onChange={onChange} />
-  ),
-  tableView: ({ config, value, onChange }: any) => (
-    <TableViewPicker
-      options={config.options}
-      value={value}
-      onChange={onChange}
-    />
-  ),
-});
+const SettingRenderer = createSettingRenderer<AppearanceState>();
 
 export function AppearanceSettings() {
   const { settings, hasChanges, updateSetting, handleSave, handleReset } =
