@@ -9,7 +9,7 @@ import { SettingsSection } from "../types";
 import { User } from "@supabase/supabase-js";
 import { ProfileSection } from "./profile-section";
 import { AppearanceSettings } from "./appearance/appearance-settings";
-import { NotificationsSettings } from "./notification-settings";
+import { NotificationsSettings } from "./notifications/notification-settings";
 import { SecuritySettings } from "./security-settings";
 import { BillingSettings } from "./billing-settings";
 
