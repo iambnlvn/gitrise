@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Filter } from "lucide-react";
 import Link from "next/link";
-import { Header } from "../../components/layout/header";
 import { RepositorySidebar } from "../../components/layout/repository-sidebar";
 import { RepositoryCard } from "../../components/layout/repository-card";
 import { ProtectedRoute } from "../../components/layout/protected-route";
@@ -12,8 +11,6 @@ export default function DashboardPage() {
   return (
     <ProtectedRoute>
       <div className="bg-background min-h-screen">
-        <Header />
-
         <div className="flex">
           <RepositorySidebar />
 
