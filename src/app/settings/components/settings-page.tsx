@@ -11,7 +11,7 @@ import { ProfileSection } from "./profile-section";
 import { AppearanceSettings } from "./appearance/appearance-settings";
 import { NotificationsSettings } from "./notifications/notification-settings";
 import { SecuritySettings } from "./security-settings";
-import { BillingSettings } from "./billing-settings";
+import { BillingSettings } from "./billing/billing-settings";
 
 export function SettingsPage({ user }: { user: User }) {
   const [activeSection, setActiveSection] =

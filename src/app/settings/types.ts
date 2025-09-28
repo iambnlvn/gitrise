@@ -55,32 +55,3 @@ export type PersonalAccessToken = {
   expiresDate: string;
   lastUsed: string | null;
 };
-
-export type PaymentMethod = {
-  id: string;
-  type: "card" | "paypal";
-  last4?: string;
-  brand?: string;
-  expiryMonth?: number;
-  expiryYear?: number;
-  isDefault: boolean;
-};
-
-export type Invoice = {
-  id: string;
-  date: string;
-  amount: number;
-  status: "paid" | "pending" | "failed";
-  description: string;
-  downloadUrl: string;
-};
-
-export type Plan = {
-  name: string;
-  price: number | null;
-  period: string;
-  features: string[];
-  current: boolean;
-};
-
-export type CardType = "visa" | "mastercard" | "amex" | "discover" | "unknown";

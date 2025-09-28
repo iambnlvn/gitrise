@@ -10,7 +10,7 @@ import {
   AlertCircle,
   Clock,
 } from "lucide-react";
-import { Invoice } from "../../types";
+import { Invoice } from "./billing-types";
 
 const INVOICE_STATUS_CONFIG = {
   paid: {

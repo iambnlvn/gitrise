@@ -2,8 +2,8 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Plus, MoreVertical } from "lucide-react";
-import { PaymentMethod } from "../../types";
 import { PaymentCardPreview } from "./payment-card-preview";
+import { PaymentMethod } from "./billing-types";
 
 type PaymentMethodsCardProps = {
   paymentMethods: PaymentMethod[];

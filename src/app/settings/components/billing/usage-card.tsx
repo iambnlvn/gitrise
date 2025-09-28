@@ -28,33 +28,14 @@ import {
 } from "recharts";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { UsageStats } from "./billing-types";
+import { usageData } from "./constants";
 
-type UsageData = {
-  date: string;
-  storage: number;
-  ciMinutes: number;
-  bandwidth: number;
-};
+interface UsageCardProps {
+  usage: UsageStats;
+}
 
-const usageData: UsageData[] = [
-  { date: "Jan 1", storage: 180, ciMinutes: 1200, bandwidth: 45 },
-  { date: "Jan 8", storage: 195, ciMinutes: 1450, bandwidth: 52 },
-  { date: "Jan 15", storage: 210, ciMinutes: 1680, bandwidth: 58 },
-  { date: "Jan 22", storage: 230, ciMinutes: 1847, bandwidth: 68 },
-  { date: "Jan 29", storage: 245, ciMinutes: 2100, bandwidth: 78 },
-  { date: "Feb 5", storage: 260, ciMinutes: 2300, bandwidth: 85 },
-  { date: "Feb 12", storage: 275, ciMinutes: 2500, bandwidth: 90 },
-  { date: "Feb 19", storage: 290, ciMinutes: 2700, bandwidth: 95 },
-  { date: "Feb 26", storage: 310, ciMinutes: 2900, bandwidth: 100 },
-];
-
-const planLimits = {
-  storage: 400,
-  ciMinutes: 3000,
-  bandwidth: 150,
-};
-
-export function UsageCard() {
+export function UsageCard({ usage }: UsageCardProps) {
   const [timeRange, setTimeRange] = useState("30days");
   const [isLoading, setIsLoading] = useState(false);
   const [visibleMetrics, setVisibleMetrics] = useState({
@@ -62,9 +43,6 @@ export function UsageCard() {
     ciMinutes: true,
     bandwidth: true,
   });
-
-  // Calculate current usage from the latest data point
-  const latestData = usageData[usageData.length - 1];
 
   const toggleMetric = (metric: keyof typeof visibleMetrics) => {
     setVisibleMetrics((prev) => ({
@@ -113,20 +91,20 @@ export function UsageCard() {
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <UsageSummaryCard
           title="Storage"
-          current={latestData.storage}
-          limit={planLimits.storage}
+          current={usage.storageUsed}
+          limit={usage.storageLimit}
           unit="GB"
         />
         <UsageSummaryCard
           title="CI Minutes"
-          current={latestData.ciMinutes}
-          limit={planLimits.ciMinutes}
+          current={usage.buildMinutes}
+          limit={usage.buildMinutesLimit}
           unit="mins"
         />
         <UsageSummaryCard
           title="Bandwidth"
-          current={latestData.bandwidth}
-          limit={planLimits.bandwidth}
+          current={usage.bandwidthUsed}
+          limit={usage.bandwidthLimit}
           unit="GB"
         />
       </div>
@@ -174,7 +152,7 @@ export function UsageCard() {
               </p>
             </div>
           </div>
-        ) : usageData.length === 0 ? (
+        ) : Object.values(usage).length === 0 ? (
           <div className="bg-muted/20 flex h-[300px] items-center justify-center rounded-md">
             <div className="flex max-w-xs flex-col items-center gap-2 text-center">
               <AlertCircle className="text-muted-foreground size-8" />
@@ -233,7 +211,7 @@ export function UsageCard() {
                 {/* Reference lines for limits */}
                 {visibleMetrics.storage && (
                   <ReferenceLine
-                    y={planLimits.storage}
+                    y={usage.storageLimit}
                     stroke="#7C3AED"
                     strokeDasharray="3 3"
                     strokeOpacity={0.7}
@@ -241,7 +219,7 @@ export function UsageCard() {
                 )}
                 {visibleMetrics.ciMinutes && (
                   <ReferenceLine
-                    y={planLimits.ciMinutes}
+                    y={usage.buildMinutesLimit}
                     stroke="#10B981"
                     strokeDasharray="3 3"
                     strokeOpacity={0.7}
@@ -249,7 +227,7 @@ export function UsageCard() {
                 )}
                 {visibleMetrics.bandwidth && (
                   <ReferenceLine
-                    y={planLimits.bandwidth}
+                    y={usage.bandwidthLimit}
                     stroke="#F59E0B"
                     strokeDasharray="3 3"
                     strokeOpacity={0.7}

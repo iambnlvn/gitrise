@@ -10,13 +10,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Check } from "lucide-react";
-import { PLANS } from "../constants";
+import { Plan } from "./billing-types";
 
 type ChangePlanDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSelectPlan: (planId: string) => void;
-  plans: typeof PLANS;
+  plans: Plan[];
   currentPlan: string;
 };
 
