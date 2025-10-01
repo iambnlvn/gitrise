@@ -67,20 +67,7 @@ export function BillingSettings() {
    * Handles adding a new payment method.
    */
   const handleAddPayment = async () => {
-    // In a real app, you'd get the payment method details from the dialog
-    // For now, we'll just close the dialog
     setShowAddPayment(false);
-
-    // Example of how you might add a payment method:
-    // const newMethod: PaymentMethod = {
-    //   id: generateId(),
-    //   type: "card",
-    //   brand: "Visa",
-    //   last4: "1234",
-    //   expiry: "12/26",
-    //   isDefault: false,
-    // };
-    // await addPaymentMethod(newMethod);
   };
 
   return (
@@ -103,7 +90,6 @@ export function BillingSettings() {
           />
         </section>
 
-        {/* Usage Summary Section */}
         <section className="space-y-3">
           <h3 className="text-foreground text-xl font-semibold">
             Usage Summary
@@ -111,7 +97,6 @@ export function BillingSettings() {
           <UsageCard usage={state.usage} />
         </section>
 
-        {/* Payment Methods Section */}
         <section className="space-y-3">
           <h3 className="text-foreground text-xl font-semibold">
             Payment Methods
@@ -124,11 +109,7 @@ export function BillingSettings() {
           />
         </section>
 
-        {/* Billing History Section */}
         <section className="space-y-3">
-          <h3 className="text-foreground text-xl font-semibold">
-            Billing History
-          </h3>
           <BillingHistoryCard
             invoices={state.invoices}
             isDownloading={state.isDownloading}
@@ -136,7 +117,6 @@ export function BillingSettings() {
           />
         </section>
 
-        {/* Dialogs */}
         <ChangePlanDialog
           open={planModalOpen}
           onOpenChange={setPlanModalOpen}
