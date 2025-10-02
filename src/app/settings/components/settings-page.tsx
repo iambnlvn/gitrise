@@ -12,6 +12,7 @@ import { AppearanceSettings } from "./appearance/appearance-settings";
 import { NotificationsSettings } from "./notifications/notification-settings";
 import { SecuritySettings } from "./security/security-settings";
 import { BillingSettings } from "./billing/billing-settings";
+import { DeveloperSettings } from "./developer/developer-settings";
 
 export function SettingsPage({ user }: { user: User }) {
   const [activeSection, setActiveSection] =
@@ -46,6 +47,8 @@ export function SettingsPage({ user }: { user: User }) {
         return <SecuritySettings />;
       case "billing":
         return <BillingSettings />;
+      case "developer":
+        return <DeveloperSettings />;
     }
   };
 
