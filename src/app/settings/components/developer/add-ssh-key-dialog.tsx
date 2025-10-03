@@ -13,7 +13,17 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components/ui/drawer";
+import { Loader2 } from "lucide-react";
 import type { NewSSHKeyConfig } from "./developer-types";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface AddSSHKeyDialogProps {
   open: boolean;
@@ -23,7 +33,8 @@ interface AddSSHKeyDialogProps {
 }
 
 /**
- * Dialog for adding new SSH keys.
+ * Dialog/Drawer for adding new SSH keys.
+ * Shows as a dialog on desktop and a drawer on mobile.
  */
 export function AddSSHKeyDialog({
   open,
@@ -31,6 +42,7 @@ export function AddSSHKeyDialog({
   onAdd,
   isLoading,
 }: AddSSHKeyDialogProps) {
+  const isMobile = useIsMobile();
   const [keyName, setKeyName] = useState("");
   const [keyContent, setKeyContent] = useState("");
 
@@ -51,6 +63,70 @@ export function AddSSHKeyDialog({
     [keyName, keyContent, onAdd, handleClose],
   );
 
+  const formContent = (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="ssh-name">Key Name</Label>
+        <Input
+          id="ssh-name"
+          placeholder="e.g., MacBook Pro"
+          value={keyName}
+          onChange={(e) => setKeyName(e.target.value)}
+          disabled={isLoading}
+          required
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="ssh-key">Public Key</Label>
+        <Textarea
+          id="ssh-key"
+          placeholder="Paste your SSH public key (ssh-rsa AAAA...)"
+          rows={5}
+          value={keyContent}
+          onChange={(e) => setKeyContent(e.target.value)}
+          disabled={isLoading}
+          required
+        />
+      </div>
+    </form>
+  );
+  if (isMobile) {
+    return (
+      <Drawer open={open} onOpenChange={onOpenChange}>
+        <DrawerContent>
+          <DrawerHeader className="text-left">
+            <DrawerTitle>Add SSH Key</DrawerTitle>
+            <DrawerDescription>
+              Add a new SSH key for secure Git operations
+            </DrawerDescription>
+          </DrawerHeader>
+
+          <div className="px-4 pb-4">{formContent}</div>
+
+          <DrawerFooter className="pt-2">
+            <Button
+              type="submit"
+              onClick={handleSubmit}
+              disabled={isLoading || !keyName.trim() || !keyContent.trim()}
+            >
+              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Add SSH Key
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleClose}
+              disabled={isLoading}
+            >
+              Cancel
+            </Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    );
+  }
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl">
@@ -61,41 +137,26 @@ export function AddSSHKeyDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit}>
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="ssh-name">Key Name</Label>
-              <Input
-                id="ssh-name"
-                placeholder="e.g., MacBook Pro"
-                value={keyName}
-                onChange={(e) => setKeyName(e.target.value)}
-                required
-              />
-            </div>
+        <div className="py-4">{formContent}</div>
 
-            <div className="space-y-2">
-              <Label htmlFor="ssh-key">Public Key</Label>
-              <Textarea
-                id="ssh-key"
-                placeholder="Paste your SSH public key (ssh-rsa AAAA...)"
-                rows={5}
-                value={keyContent}
-                onChange={(e) => setKeyContent(e.target.value)}
-                required
-              />
-            </div>
-          </div>
-
-          <DialogFooter className="mt-6">
-            <Button type="button" variant="outline" onClick={handleClose}>
-              Cancel
-            </Button>
-            <Button type="submit" disabled={isLoading}>
-              Add SSH Key
-            </Button>
-          </DialogFooter>
-        </form>
+        <DialogFooter>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleClose}
+            disabled={isLoading}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            onClick={handleSubmit}
+            disabled={isLoading || !keyName.trim() || !keyContent.trim()}
+          >
+            {isLoading && <Loader2 className="mr-2 size-4 animate-spin" />}
+            Add SSH Key
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
