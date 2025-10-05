@@ -3,12 +3,21 @@ import {
   DeveloperPreferences,
   DeveloperState,
   IntegrationStatus,
-  Integration,
   NewOAuthAppConfig,
   NewSSHKeyConfig,
   NewTokenConfig,
   NewWebhookConfig,
+  NewGPGKeyConfig,
+  NewIntegrationConfig,
+  ConnectedIntegration,
+  IntegrationPermissions,
+  PermissionChangeEvent,
 } from "@/app/settings/components/developer/developer-types";
+import {
+  getPermissionSummary,
+  mergePermissions,
+  validatePermissions,
+} from "@/utils/permission-manager";
 import { useState, useCallback } from "react";
 import { toast } from "sonner";
 
@@ -20,7 +29,7 @@ interface UseDeveloperOptions {
   onTokenRevoke?: (tokenId: string) => Promise<void>;
   onSSHKeyAdd?: (config: NewSSHKeyConfig) => Promise<void>;
   onSSHKeyRemove?: (keyId: string) => Promise<void>;
-  onGPGKeyAdd?: (key: string) => Promise<void>;
+  onGPGKeyAdd?: (config: NewGPGKeyConfig) => Promise<void>;
   onGPGKeyRemove?: (keyId: string) => Promise<void>;
   onGPGKeySetPrimary?: (keyId: string) => Promise<void>;
   onOAuthAppCreate?: (config: NewOAuthAppConfig) => Promise<void>;
@@ -36,13 +45,17 @@ interface UseDeveloperOptions {
   ) => Promise<void>;
   onWebhookDelete?: (webhookId: string) => Promise<void>;
   onWebhookTest?: (webhookId: string) => Promise<void>;
-  onIntegrationAdd?: (config: Integration) => Promise<void>;
+  onIntegrationAdd?: (config: NewIntegrationConfig) => Promise<void>;
   onIntegrationRemove?: (integrationId: string) => Promise<void>;
   onIntegrationToggle?: (
     integrationId: string,
     status: IntegrationStatus,
   ) => Promise<void>;
   onIntegrationRevoke?: (integrationId: string) => Promise<void>;
+  onIntegrationPermissionsUpdate?: (
+    integrationId: string,
+    permissions: IntegrationPermissions,
+  ) => Promise<void>;
   onPreferencesUpdate?: (preferences: DeveloperPreferences) => Promise<void>;
 }
 
@@ -140,6 +153,7 @@ export function useDeveloper(options?: UseDeveloperOptions) {
           name: config.name,
           fingerprint: `SHA256:${Math.random().toString(36).substring(2, 45)}`,
           added: new Date().toLocaleDateString(),
+          created: new Date().toLocaleDateString(),
           lastUsed: "Never",
         };
 
@@ -394,32 +408,69 @@ export function useDeveloper(options?: UseDeveloperOptions) {
   );
 
   /**
-   * Adds a new integration.
+   * Adds a new integration with permission validation.
    */
   const addIntegration = useCallback(
-    async (config: Integration) => {
+    async (config: NewIntegrationConfig) => {
       setIsLoading(true);
       try {
+        // Find the integration from available integrations
+        const baseIntegration = state.availableIntegrations.find(
+          (i) => i.id === config.integrationId,
+        );
+
+        if (!baseIntegration) {
+          throw new Error("Integration not found");
+        }
+
+        // Merge permissions with preset or use default
+        const permissions = mergePermissions(
+          config.permissions || {},
+          config.permissionPreset ||
+            state.preferences.defaultPermissionPreset ||
+            "standard",
+        );
+
+        // Validate permissions against required permissions
+        const validation = validatePermissions(
+          permissions,
+          baseIntegration.requiredPermissions,
+        );
+
+        if (!validation.valid) {
+          toast.error(`Invalid permissions: ${validation.errors.join(", ")}`);
+          throw new Error("Permission validation failed");
+        }
+
+        // Show warnings if any
+        if (validation.warnings.length > 0) {
+          validation.warnings.forEach((warning) => toast.warning(warning));
+        }
+
         if (options?.onIntegrationAdd) {
           await options.onIntegrationAdd(config);
         }
 
-        const newIntegration = {
-          id: config.id,
-          name: config.name,
-          type: config.type,
-          description: config.description,
-          status: config.status,
-          lastSync: "Never",
-          configuration: config.configuration,
+        const newIntegration: ConnectedIntegration = {
+          ...baseIntegration,
+          connectedAt: new Date().toISOString(),
+          status: "active",
+          apiKey: config.apiKey,
+          webhookUrl: config.webhookUrl,
+          permissions,
+          permissionPreset: config.permissionPreset,
         };
 
         setState((prev) => ({
           ...prev,
-          integrations: [...prev.integrations, newIntegration],
+          connectedIntegrations: [
+            ...prev.connectedIntegrations,
+            newIntegration,
+          ],
         }));
 
-        toast.success("Integration added successfully");
+        const summary = getPermissionSummary(permissions);
+        toast.success(`Integration added with: ${summary}`);
       } catch (error) {
         toast.error("Failed to add integration");
         console.error("Integration add error:", error);
@@ -427,9 +478,97 @@ export function useDeveloper(options?: UseDeveloperOptions) {
         setIsLoading(false);
       }
     },
-    [options],
+    [
+      state.availableIntegrations,
+      state.preferences.defaultPermissionPreset,
+      options,
+    ],
   );
 
+  /**
+   * Updates integration permissions.
+   */
+  const updateIntegrationPermissions = useCallback(
+    async (
+      integrationId: string,
+      partialPermissions: Partial<IntegrationPermissions>,
+      preset?: "read-only" | "standard" | "full-access" | "custom",
+    ) => {
+      setIsLoading(true);
+      try {
+        const integration = state.connectedIntegrations.find(
+          (i) => i.id === integrationId,
+        );
+
+        if (!integration) {
+          throw new Error("Integration not found");
+        }
+
+        // Store previous permissions for audit
+        const previousPermissions = { ...integration.permissions };
+
+        // Merge new permissions
+        const newPermissions = mergePermissions(
+          { ...integration.permissions, ...partialPermissions },
+          preset || integration.permissionPreset || "custom",
+        );
+
+        // Validate new permissions
+        const baseIntegration = state.availableIntegrations.find(
+          (i) => i.id === integrationId,
+        );
+
+        const validation = validatePermissions(
+          newPermissions,
+          baseIntegration?.requiredPermissions,
+        );
+
+        if (!validation.valid) {
+          toast.error(`Invalid permissions: ${validation.errors.join(", ")}`);
+          throw new Error("Permission validation failed");
+        }
+
+        if (options?.onIntegrationPermissionsUpdate) {
+          await options.onIntegrationPermissionsUpdate(
+            integrationId,
+            newPermissions,
+          );
+        }
+
+        setState((prev) => ({
+          ...prev,
+          connectedIntegrations: prev.connectedIntegrations.map((i) =>
+            i.id === integrationId
+              ? {
+                  ...i,
+                  permissions: newPermissions,
+                  permissionPreset: preset || "custom",
+                }
+              : i,
+          ),
+        }));
+
+        // Create audit event
+        const changeEvent: PermissionChangeEvent = {
+          integrationId,
+          previousPermissions,
+          newPermissions,
+          changedBy: "user", // Replace with actual user ID
+          timestamp: new Date().toISOString(),
+        };
+
+        console.log("Permission change event:", changeEvent);
+
+        toast.success("Integration permissions updated successfully");
+      } catch (error) {
+        toast.error("Failed to update integration permissions");
+        console.error("Integration permissions update error:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [state.connectedIntegrations, state.availableIntegrations, options],
+  );
   /**
    * Toggles an integration.
    */
@@ -437,7 +576,7 @@ export function useDeveloper(options?: UseDeveloperOptions) {
     async (integrationId: string) => {
       setIsLoading(true);
       try {
-        const integration = state.integrations.find(
+        const integration = state.connectedIntegrations.find(
           (i) => i.id === integrationId,
         );
         const newStatus =
@@ -449,15 +588,15 @@ export function useDeveloper(options?: UseDeveloperOptions) {
 
         setState((prev) => ({
           ...prev,
-          integrations: prev.integrations.map((i) =>
+          connectedIntegrations: prev.connectedIntegrations.map((i) =>
             i.id === integrationId ? { ...i, status: newStatus } : i,
           ),
         }));
 
         toast.success(
           newStatus === "active"
-            ? "Integration authorized"
-            : "Integration revoked",
+            ? "Integration activated"
+            : "Integration deactivated",
         );
       } catch (error) {
         toast.error("Failed to toggle integration");
@@ -466,7 +605,7 @@ export function useDeveloper(options?: UseDeveloperOptions) {
         setIsLoading(false);
       }
     },
-    [state.integrations, options],
+    [state.connectedIntegrations, options],
   );
 
   const revokeIntegration = useCallback(
@@ -479,7 +618,9 @@ export function useDeveloper(options?: UseDeveloperOptions) {
 
         setState((prev) => ({
           ...prev,
-          integrations: prev.integrations.filter((i) => i.id !== integrationId),
+          connectedIntegrations: prev.connectedIntegrations.filter(
+            (i) => i.id !== integrationId,
+          ),
         }));
 
         toast.success("Integration revoked successfully");
@@ -493,6 +634,23 @@ export function useDeveloper(options?: UseDeveloperOptions) {
     [options],
   );
 
+  /**
+   * Gets permission summary for an integration.
+   */
+  const getIntegrationPermissionSummary = useCallback(
+    (integrationId: string): string => {
+      const integration = state.connectedIntegrations.find(
+        (i) => i.id === integrationId,
+      );
+
+      if (!integration) {
+        return "No permissions";
+      }
+
+      return getPermissionSummary(integration.permissions);
+    },
+    [state.connectedIntegrations],
+  );
   /**
    * Updates developer preferences.
    */
@@ -537,6 +695,8 @@ export function useDeveloper(options?: UseDeveloperOptions) {
     deleteWebhook,
     testWebhook,
     addIntegration,
+    updateIntegrationPermissions,
+    getIntegrationPermissionSummary,
     revokeIntegration,
     toggleIntegration,
     updatePreferences,
