@@ -478,7 +478,11 @@ export function AddIntegrationDialog({
 
   if (isMobile) {
     return (
-      <Drawer open={open} onOpenChange={onOpenChange}>
+      <Drawer
+        open={open}
+        onOpenChange={onOpenChange}
+        onClose={() => handleCancel()}
+      >
         <DrawerContent>
           <DrawerHeader className="text-left">
             <DrawerTitle>Add New Integration</DrawerTitle>
