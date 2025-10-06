@@ -3,11 +3,12 @@
 import { memo } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Settings, Puzzle } from "lucide-react";
-import type { Integration } from "./developer-types";
+import { Plus, Settings } from "lucide-react";
+import type { ConnectedIntegration } from "./developer-types";
+import Image from "next/image";
 
 interface IntegrationsSectionProps {
-  integrations: Integration[];
+  integrations: ConnectedIntegration[];
   onToggle: (integrationId: string) => void;
   onAddNew: () => void;
   isLoading?: boolean;
@@ -18,7 +19,7 @@ const IntegrationItem = memo(
     integration,
     onToggle,
   }: {
-    integration: Integration;
+    integration: ConnectedIntegration;
     onToggle: (id: string) => void;
   }) => (
     <div className="border-border bg-card rounded-lg border p-4 shadow-sm transition-shadow hover:shadow-md">
@@ -26,7 +27,13 @@ const IntegrationItem = memo(
         <div className="flex-1 space-y-2">
           <div className="flex items-center gap-2">
             <div className="bg-primary/10 flex size-10 items-center justify-center rounded-lg">
-              <Puzzle className="text-primary size-5" />
+              <Image
+                src={integration.icon}
+                alt={integration.name}
+                unoptimized
+                width={32}
+                height={32}
+              />
             </div>
             <div>
               <div className="font-medium">{integration.name}</div>
@@ -36,14 +43,13 @@ const IntegrationItem = memo(
             </div>
           </div>
           <div className="flex flex-wrap gap-1">
-            {integration.configuration.permissions.map((perm) => (
-              <Badge key={perm} variant="outline" className="text-xs">
-                {perm}
-              </Badge>
-            ))}
+            <Badge variant="outline" className="text-xs">
+              {integration.category}
+            </Badge>
           </div>
           <div className="text-muted-foreground text-xs">
-            Last sync: {integration.lastSync}
+            Connected At:{" "}
+            {new Date(integration.connectedAt).toLocaleDateString()}
           </div>
         </div>
         <Badge

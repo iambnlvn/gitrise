@@ -118,7 +118,7 @@ export function DeveloperSettings() {
       <APIUsageSection usage={state.apiUsage} />
 
       <IntegrationsSection
-        integrations={state.integrations}
+        integrations={state.connectedIntegrations}
         onToggle={toggleIntegration}
         onAddNew={handleOpenIntegrationDialog}
         isLoading={isLoading}
