@@ -110,17 +110,8 @@ export interface SSHKey extends BaseKey {
  * GPG Key for commit signing.
  * Used to cryptographically sign Git commits and tags.
  */
-export interface GPGKey extends BaseEntity {
-  /** GPG key ID (short or long form) */
-  keyId: string;
-  /** Email address associated with the key */
-  email: string;
-  /** ISO 8601 timestamp when key was added */
-  added: string;
-  /** Whether the key has been verified */
-  verified: boolean;
-  /** Whether this is the primary signing key */
-  primary: boolean;
+export interface GPGKey extends NewGPGKeyConfig {
+  isPrimary: boolean;
 }
 
 /**
@@ -467,12 +458,41 @@ export interface NewSSHKeyConfig {
  * Configuration for adding a new GPG key.
  */
 export interface NewGPGKeyConfig {
-  /** Key name/label */
-  name: string;
-  /** GPG public key content */
+  /** The full ASCII-armored GPG public key block */
   content: string;
-  /** Email address associated with the key */
-  email: string;
+
+  /** Metadata parsed from the key (auto-filled, read-only in UI) */
+  metadata?: GPGKeyMetadata;
+}
+
+/** Metadata extracted from a GPG key.
+ * Used to display key details in the UI.
+ */
+
+export interface GPGKeyMetadata {
+  /** Extracted name from key’s User ID */
+  name?: string;
+
+  /** Extracted email from key’s User ID */
+  email?: string;
+
+  /** Short key ID (e.g., 0xAB12CD34) */
+  keyId?: string;
+
+  /** Full fingerprint */
+  fingerprint?: string;
+
+  /** Key algorithm (e.g., RSA, Ed25519) */
+  algorithm?: string;
+
+  /** UTC string creation date */
+  createdAt?: string;
+
+  /** UTC string expiry date (if any) */
+  expiresAt?: string;
+
+  /** Optional comment or UID label */
+  comment?: string;
 }
 
 /**
