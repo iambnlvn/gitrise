@@ -201,6 +201,41 @@ export function useDeveloper(options?: UseDeveloperOptions) {
   );
 
   /**
+   * Adds a new GPG key.
+   *
+   */
+
+  const addGPGKey = useCallback(
+    async (config: NewGPGKeyConfig) => {
+      setIsLoading(true);
+      try {
+        if (options?.onGPGKeyAdd) {
+          await options.onGPGKeyAdd(config);
+        }
+
+        const newKey = {
+          content: config.content,
+          metadata: config.metadata,
+          isPrimary: false,
+        };
+
+        setState((prev) => ({
+          ...prev,
+          gpgKeys: [...prev.gpgKeys, newKey],
+        }));
+
+        toast.success("GPG key added successfully");
+      } catch (error) {
+        toast.error("Failed to add GPG key");
+        console.error("GPG key add error:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [options],
+  );
+
+  /**
    * Removes a GPG key.
    */
   const removeGPGKey = useCallback(
@@ -213,7 +248,7 @@ export function useDeveloper(options?: UseDeveloperOptions) {
 
         setState((prev) => ({
           ...prev,
-          gpgKeys: prev.gpgKeys.filter((k) => k.id !== keyId),
+          gpgKeys: prev.gpgKeys.filter((k) => k.metadata?.keyId !== keyId),
         }));
 
         toast.success("GPG key removed successfully");
@@ -242,7 +277,7 @@ export function useDeveloper(options?: UseDeveloperOptions) {
           ...prev,
           gpgKeys: prev.gpgKeys.map((k) => ({
             ...k,
-            primary: k.id === keyId,
+            primary: k.metadata?.keyId === keyId,
           })),
         }));
 
@@ -689,6 +724,7 @@ export function useDeveloper(options?: UseDeveloperOptions) {
     removeSSHKey,
     removeGPGKey,
     setGPGKeyPrimary,
+    addGPGKey,
     createOAuthApp,
     deleteOAuthApp,
     createWebhook,
