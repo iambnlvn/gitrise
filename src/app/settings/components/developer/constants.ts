@@ -98,24 +98,73 @@ export const INITIAL_SSH_KEYS: SSHKey[] = [
  */
 export const INITIAL_GPG_KEYS: GPGKey[] = [
   {
-    id: "1",
-    name: "Primary Signing Key",
-    keyId: "4096R/ABCD1234",
-    email: "davidmartinez@gitrise.com",
-    added: "Jan 15, 2024",
-    created: "Jan 15, 2024",
-    verified: true,
-    primary: true,
-  },
-  {
-    id: "2",
-    name: "Backup Key",
-    keyId: "4096R/EFGH5678",
-    email: "bk.davidmartinez@gitrise.com",
-    added: "Dec 1, 2023",
-    created: "Dec 1, 2023",
-    verified: true,
-    primary: false,
+    content: `-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+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
+9Mnfow7fSkANYQPih6/xCK0ewlOVdg==
+=YTgt
+-----END PGP PUBLIC KEY BLOCK-----
+`,
+    isPrimary: true,
+    metadata: {
+      name: "David Martinez",
+      email: "davidmartinezbk@arasaka.com",
+      comment: "this is a test gpg key for gitrise",
+      keyId: "AE74F4F689F90196",
+      fingerprint: "B06A507F572814B46A92F420AE74F4F689F90196",
+      algorithm: "rsaEncryptSign",
+      createdAt: "Fri, 31 Oct 2025 11:45:52 GMT",
+      expiresAt: "Sat, 31 Oct 2026 11:45:52 GMT",
+    },
   },
 ] as const;
 
