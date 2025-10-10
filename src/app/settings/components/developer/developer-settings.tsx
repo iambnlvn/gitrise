@@ -17,6 +17,7 @@ import { CreateOAuthAppDialog } from "./create-Oauth-app-dialog";
 import { CreateWebhookDialog } from "./create-webhook-dialog";
 import { SettingHeader } from "../shared";
 import { AddIntegrationDialog } from "./add-integration-dialog";
+import { AddGPGKeyDialog } from "./add-gpg-key-dialog";
 
 /**
  * Main developer settings component.
@@ -31,6 +32,7 @@ export function DeveloperSettings() {
     generateToken,
     revokeToken,
     addSSHKey,
+    addGPGKey,
     removeSSHKey,
     removeGPGKey,
     setGPGKeyPrimary,
@@ -49,7 +51,7 @@ export function DeveloperSettings() {
   const [showOAuthDialog, setShowOAuthDialog] = useState(false);
   const [showWebhookDialog, setShowWebhookDialog] = useState(false);
   const [showIntegrationDialog, setShowIntegrationDialog] = useState(false);
-
+  const [showGPGDialog, setShowGPGDialog] = useState(false);
   const handleOpenTokenDialog = useCallback(() => setShowTokenDialog(true), []);
   const handleOpenSSHDialog = useCallback(() => setShowSSHDialog(true), []);
   const handleOpenOAuthDialog = useCallback(() => setShowOAuthDialog(true), []);
@@ -63,6 +65,7 @@ export function DeveloperSettings() {
     [],
   );
 
+  const handleOpenGPGDialog = useCallback(() => setShowGPGDialog(true), []);
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 space-y-6 duration-500">
       <SettingHeader
@@ -93,10 +96,7 @@ export function DeveloperSettings() {
         keys={state.gpgKeys}
         onRemove={removeGPGKey}
         onSetPrimary={setGPGKeyPrimary}
-        onAddNew={() => {
-          // TODO: Implement GPG key dialog
-          console.log("Add GPG key");
-        }}
+        onAddNew={handleOpenGPGDialog}
         isLoading={isLoading}
       />
 
@@ -136,7 +136,12 @@ export function DeveloperSettings() {
         onGenerate={generateToken}
         isLoading={isLoading}
       />
-
+      <AddGPGKeyDialog
+        open={showGPGDialog}
+        onOpenChange={setShowGPGDialog}
+        onAdd={addGPGKey}
+        isLoading={false}
+      />
       <AddSSHKeyDialog
         open={showSSHDialog}
         onOpenChange={setShowSSHDialog}
