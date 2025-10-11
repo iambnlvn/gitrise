@@ -44,18 +44,17 @@ export default function DashboardPage() {
               {/* Repository Grid */}
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {mockRepositories.map((repo, index) => (
-                  <Link key={index} href={`/john.doe/${repo.name}`}>
-                    <RepositoryCard
-                      name={repo.name}
-                      owner={repo.owner}
-                      description={repo.description}
-                      language={repo.language}
-                      stars={repo.stars}
-                      forks={repo.forks}
-                      isPrivate={repo.isPrivate}
-                      updatedAt={repo.updatedAt}
-                    />
-                  </Link>
+                  <RepositoryCard
+                    key={index}
+                    name={repo.name}
+                    owner={repo.owner}
+                    description={repo.description}
+                    language={repo.language}
+                    stars={repo.stars}
+                    forks={repo.forks}
+                    isPrivate={repo.isPrivate}
+                    updatedAt={repo.updatedAt}
+                  />
                 ))}
               </div>
             </div>

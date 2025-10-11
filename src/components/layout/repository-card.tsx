@@ -93,19 +93,27 @@ export function RepositoryCard({
   return (
     <TooltipProvider>
       <Card className="group border-border/60 hover:border-primary/20 border transition-all duration-200 hover:shadow-md">
-        <CardContent className="p-4">
+        <CardContent
+          className="p-4"
+          onClick={(e) => {
+            e.stopPropagation();
+            window.location.href = `/${owner}/${name}`;
+          }}
+        >
           <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
             <div className="flex flex-wrap items-center gap-2">
               <h3 className="flex items-center font-medium">
                 <Link
                   href={`/${owner}`}
                   className="text-muted-foreground hover:text-foreground text-sm transition-colors"
+                  onClick={(e) => e.stopPropagation()}
                 >
                   {owner}/
                 </Link>
                 <Link
                   href={`/${owner}/${name}`}
                   className="text-primary ml-0.5 max-w-[150px] overflow-hidden font-bold text-ellipsis whitespace-nowrap transition-colors hover:underline sm:max-w-[100px]"
+                  onClick={(e) => e.stopPropagation()}
                 >
                   {name}
                 </Link>
