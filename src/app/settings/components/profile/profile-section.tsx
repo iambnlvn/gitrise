@@ -354,7 +354,7 @@ export function ProfileSection({ user }: { user: User }) {
   ];
 
   return (
-    <div className="animate-in fade-in space-y-8 duration-500">
+    <div className="animate-in fade-in slide-in-from-bottom-4 space-y-6 duration-500">
       {/* Header Section */}
       <SettingHeader
         title="Profile Settings"
