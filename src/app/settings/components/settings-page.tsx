@@ -7,7 +7,7 @@ import { SettingsSidebar } from "./settings-sidebar";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { SettingsSection } from "../types";
 import { User } from "@supabase/supabase-js";
-import { ProfileSection } from "./profile-section";
+import { ProfileSection } from "./profile/profile-section";
 import { AppearanceSettings } from "./appearance/appearance-settings";
 import { NotificationsSettings } from "./notifications/notification-settings";
 import { SecuritySettings } from "./security/security-settings";
