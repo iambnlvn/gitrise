@@ -13,6 +13,7 @@ import { NotificationsSettings } from "./notifications/notification-settings";
 import { SecuritySettings } from "./security/security-settings";
 import { BillingSettings } from "./billing/billing-settings";
 import { DeveloperSettings } from "./developer/developer-settings";
+import { PrivacySettings } from "./privacy/privacy-settings";
 
 export function SettingsPage({ user }: { user: User }) {
   const [activeSection, setActiveSection] =
@@ -49,6 +50,8 @@ export function SettingsPage({ user }: { user: User }) {
         return <BillingSettings />;
       case "developer":
         return <DeveloperSettings />;
+      case "privacy":
+        return <PrivacySettings />;
     }
   };
 
