@@ -4,8 +4,8 @@ import { useState, useEffect, useMemo } from "react";
 import { CreditCard } from "lucide-react";
 
 import { CardFormData } from "./add-payment-dialog";
-import { CARD_GRADIENTS } from "./constants";
-import { CardType } from "./billing-types";
+import { CARD_GRADIENTS } from "../constants";
+import { CardType } from "../billing-types";
 // TODO: get fancy with this and make the card onClick switch to the appropriate input field
 
 interface PaymentCardPreviewProps {

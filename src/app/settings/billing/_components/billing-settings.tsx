@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { SettingHeader } from "../shared";
+import { SettingHeader } from "../../components/shared";
 import { UsageCard } from "./usage-card";
 import { PaymentMethodsCard } from "./payment-methods-card";
 import { BillingHistoryCard } from "./billing-history-card";
 import { ChangePlanDialog } from "./change-plan-dialog";
 import { AddPaymentDialog } from "./add-payment-dialog";
 import { BillingOverview } from "./billing-overview";
-import { PLANS } from "./constants";
+import { PLANS } from "../constants";
 import { useBilling } from "@/hooks/use-billing";
 
 /**

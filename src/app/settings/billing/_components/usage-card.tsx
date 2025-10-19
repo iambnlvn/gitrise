@@ -28,8 +28,8 @@ import {
 } from "recharts";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { UsageStats } from "./billing-types";
-import { usageData } from "./constants";
+import { UsageStats } from "../billing-types";
+import { usageData } from "../constants";
 
 interface UsageCardProps {
   usage: UsageStats;

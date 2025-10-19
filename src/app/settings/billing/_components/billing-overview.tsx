@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Check } from "lucide-react";
-import { Plan } from "./billing-types";
+import { Plan } from "../billing-types";
 
 type BillingOverviewProps = {
   currentPlan: string;
