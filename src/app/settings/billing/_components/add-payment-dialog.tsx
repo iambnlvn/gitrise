@@ -11,11 +11,21 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components/ui/drawer";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 import { Loader2, Shield } from "lucide-react";
 import { z } from "zod";
 import { PaymentCardPreview } from "./payment-card-preview";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type AddPaymentDialogProps = {
   open: boolean;
@@ -87,6 +97,110 @@ const formatters = {
   cardName: (value: string) => value.toUpperCase(),
 } as const;
 
+function PaymentForm({
+  cardForm,
+  cardErrors,
+  onFieldChange,
+  onFieldFocus,
+  onFieldBlur,
+  getInputClassName,
+}: {
+  cardForm: CardFormData;
+  cardErrors: Partial<Record<keyof CardFormData, string>>;
+  focusedInput: string | null;
+  onFieldChange: (field: keyof CardFormData, value: string) => void;
+  onFieldFocus: (field: string) => void;
+  onFieldBlur: (field: keyof CardFormData) => void;
+  getInputClassName: (field: keyof CardFormData) => string;
+}) {
+  return (
+    <div className="space-y-6">
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="cardNumber">Card Number</Label>
+          <Input
+            id="cardNumber"
+            type="text"
+            placeholder="1234 5678 9012 3456"
+            value={cardForm.cardNumber}
+            onChange={(e) => onFieldChange("cardNumber", e.target.value)}
+            onFocus={() => onFieldFocus("cardNumber")}
+            onBlur={() => onFieldBlur("cardNumber")}
+            className={getInputClassName("cardNumber")}
+            maxLength={19}
+          />
+          {cardErrors.cardNumber && (
+            <p className="text-sm text-red-500">{cardErrors.cardNumber}</p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="cardName">Cardholder Name</Label>
+          <Input
+            id="cardName"
+            type="text"
+            placeholder="JOHN DOE"
+            value={cardForm.cardName}
+            onChange={(e) => onFieldChange("cardName", e.target.value)}
+            onFocus={() => onFieldFocus("cardName")}
+            onBlur={() => onFieldBlur("cardName")}
+            className={getInputClassName("cardName")}
+          />
+          {cardErrors.cardName && (
+            <p className="text-sm text-red-500">{cardErrors.cardName}</p>
+          )}
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="expiryDate">Expiry Date</Label>
+            <Input
+              id="expiryDate"
+              type="text"
+              placeholder="MM/YY"
+              value={cardForm.expiryDate}
+              onChange={(e) => onFieldChange("expiryDate", e.target.value)}
+              onFocus={() => onFieldFocus("expiryDate")}
+              onBlur={() => onFieldBlur("expiryDate")}
+              className={getInputClassName("expiryDate")}
+              maxLength={5}
+            />
+            {cardErrors.expiryDate && (
+              <p className="text-sm text-red-500">{cardErrors.expiryDate}</p>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="cvc">CVC</Label>
+            <Input
+              id="cvc"
+              type="text"
+              placeholder="123"
+              value={cardForm.cvc}
+              onChange={(e) => onFieldChange("cvc", e.target.value)}
+              onFocus={() => onFieldFocus("cvc")}
+              onBlur={() => onFieldBlur("cvc")}
+              className={getInputClassName("cvc")}
+              maxLength={4}
+            />
+            {cardErrors.cvc && (
+              <p className="text-sm text-red-500">{cardErrors.cvc}</p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Security Notice */}
+      <div className="bg-muted/50 flex items-center gap-2 rounded-lg p-3">
+        <Shield className="h-4 w-4 text-green-600" />
+        <p className="text-muted-foreground text-sm">
+          Your payment information is encrypted and secure
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export function AddPaymentDialog({
   open,
   onOpenChange,
@@ -103,13 +217,17 @@ export function AddPaymentDialog({
     Partial<Record<keyof CardFormData, string>>
   >({});
   const [isPending, startTransition] = useTransition();
-
+  const isMobile = useIsMobile();
   const handleFieldChange = (field: keyof CardFormData, value: string) => {
     const formatter = formatters[field];
     const formattedValue = formatter ? formatter(value) : value;
 
     setCardForm((prev) => ({ ...prev, [field]: formattedValue }));
     setCardErrors((prev) => ({ ...prev, [field]: "" }));
+  };
+
+  const handleFieldFocus = (field: string) => {
+    setFocusedInput(field);
   };
 
   const handleFieldBlur = (field: keyof CardFormData) => {
@@ -182,7 +300,55 @@ export function AddPaymentDialog({
       focusedInput === field ? "scale-105 ring-2 ring-[#7C3AED]" : ""
     } ${cardErrors[field] ? "border-red-500" : ""}`;
   };
+  if (isMobile) {
+    return (
+      <Drawer open={open} onOpenChange={onOpenChange}>
+        <DrawerContent className="max-h-[85vh]">
+          <DrawerHeader className="text-left">
+            <DrawerTitle>Add Payment Method</DrawerTitle>
+            <DrawerDescription>
+              Add a new payment method to your account
+            </DrawerDescription>
+            <PaymentCardPreview
+              cardData={cardForm}
+              isFlipped={focusedInput === "cvc"}
+            />
+          </DrawerHeader>
 
+          <div className="flex-1 overflow-auto px-4 pb-4">
+            <PaymentForm
+              cardForm={cardForm}
+              cardErrors={cardErrors}
+              focusedInput={focusedInput}
+              onFieldChange={handleFieldChange}
+              onFieldFocus={handleFieldFocus}
+              onFieldBlur={handleFieldBlur}
+              getInputClassName={getInputClassName}
+            />
+          </div>
+
+          <DrawerFooter className="pt-2">
+            <Button
+              className="bg-[#7C3AED] transition-all duration-200 hover:bg-[#7C3AED]/90 disabled:cursor-not-allowed disabled:opacity-50"
+              onClick={handleAddPaymentMethod}
+              disabled={!isCardFormValid() || isPending}
+              size="lg"
+            >
+              {isPending ? (
+                <Loader2 className="mr-2 size-4 animate-spin" />
+              ) : null}
+              Add Payment Method
+            </Button>
+            <DrawerClose asChild>
+              <Button variant="outline" size="lg" onClick={handleCancel}>
+                Cancel
+              </Button>
+            </DrawerClose>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    );
+  }
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-lg">
@@ -192,101 +358,21 @@ export function AddPaymentDialog({
             Add a new payment method to your account
           </DialogDescription>
         </DialogHeader>
-
-        <PaymentCardPreview
-          cardData={cardForm}
-          isFlipped={focusedInput === "cvc"}
-        />
-
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="cardNumber">Card Number</Label>
-            <Input
-              id="cardNumber"
-              inputMode="numeric"
-              placeholder="1234 5678 9012 3456"
-              value={cardForm.cardNumber}
-              onChange={(e) => handleFieldChange("cardNumber", e.target.value)}
-              onFocus={() => setFocusedInput("cardNumber")}
-              onBlur={() => handleFieldBlur("cardNumber")}
-              maxLength={19}
-              className={getInputClassName("cardNumber")}
-            />
-            {cardErrors.cardNumber && (
-              <p className="animate-in fade-in slide-in-from-top-1 text-xs text-red-500">
-                {cardErrors.cardNumber}
-              </p>
-            )}
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="cardName">Cardholder Name</Label>
-            <Input
-              id="cardName"
-              placeholder="JOHN DOE"
-              value={cardForm.cardName}
-              onChange={(e) => handleFieldChange("cardName", e.target.value)}
-              onFocus={() => setFocusedInput("cardName")}
-              onBlur={() => handleFieldBlur("cardName")}
-              className={getInputClassName("cardName")}
-            />
-            {cardErrors.cardName && (
-              <p className="animate-in fade-in slide-in-from-top-1 text-xs text-red-500">
-                {cardErrors.cardName}
-              </p>
-            )}
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="expiryDate">Expiry Date</Label>
-              <Input
-                id="expiryDate"
-                placeholder="MM/YY"
-                value={cardForm.expiryDate}
-                onChange={(e) =>
-                  handleFieldChange("expiryDate", e.target.value)
-                }
-                onFocus={() => setFocusedInput("expiryDate")}
-                onBlur={() => handleFieldBlur("expiryDate")}
-                maxLength={5}
-                className={getInputClassName("expiryDate")}
-              />
-              {cardErrors.expiryDate && (
-                <p className="animate-in fade-in slide-in-from-top-1 text-xs text-red-500">
-                  {cardErrors.expiryDate}
-                </p>
-              )}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="cvc">CVC</Label>
-              <Input
-                id="cvc"
-                placeholder="123"
-                value={cardForm.cvc}
-                onChange={(e) => handleFieldChange("cvc", e.target.value)}
-                onFocus={() => setFocusedInput("cvc")}
-                onBlur={() => handleFieldBlur("cvc")}
-                maxLength={4}
-                type="password"
-                className={getInputClassName("cvc")}
-              />
-              {cardErrors.cvc && (
-                <p className="animate-in fade-in slide-in-from-top-1 text-xs text-red-500">
-                  {cardErrors.cvc}
-                </p>
-              )}
-            </div>
-          </div>
-
-          <div className="bg-accent/50 border-border flex items-center gap-2 rounded-lg border p-3">
-            <Shield className="size-5 text-[#7C3AED]" />
-            <p className="text-muted-foreground text-xs">
-              Your payment information is encrypted and secure. We never store
-              your full card details.
-            </p>
-          </div>
+        <div className="flex justify-center">
+          <PaymentCardPreview
+            cardData={cardForm}
+            isFlipped={focusedInput === "cvc"}
+          />
         </div>
+        <PaymentForm
+          cardForm={cardForm}
+          cardErrors={cardErrors}
+          focusedInput={focusedInput}
+          onFieldChange={handleFieldChange}
+          onFieldFocus={handleFieldFocus}
+          onFieldBlur={handleFieldBlur}
+          getInputClassName={getInputClassName}
+        />
 
         <DialogFooter>
           <Button variant="outline" onClick={handleCancel}>
