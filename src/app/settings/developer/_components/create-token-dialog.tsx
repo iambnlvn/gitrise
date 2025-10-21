@@ -15,8 +15,8 @@ import {
 } from "@/components/ui/dialog";
 import { Copy, CheckCircle2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { TOKEN_SCOPES } from "./constants";
-import type { NewTokenConfig } from "./developer-types";
+import { TOKEN_SCOPES } from "../constants";
+import type { NewTokenConfig } from "../developer-types";
 import { useIsMobile } from "@/hooks/use-mobile";
 import {
   Drawer,

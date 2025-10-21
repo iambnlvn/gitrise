@@ -13,8 +13,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { WEBHOOK_EVENTS } from "./constants";
-import type { NewWebhookConfig } from "./developer-types";
+import { WEBHOOK_EVENTS } from "../constants";
+import type { NewWebhookConfig } from "../developer-types";
 
 interface CreateWebhookDialogProps {
   open: boolean;

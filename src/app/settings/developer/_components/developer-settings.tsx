@@ -3,6 +3,13 @@
 import { useState, useCallback } from "react";
 import { useDeveloper } from "@/hooks/use-developer";
 import { QuickActionsSection } from "./quick-actions";
+import { CreateTokenDialog } from "./create-token-dialog";
+import { AddSSHKeyDialog } from "./add-ssh-key-dialog";
+import { CreateOAuthAppDialog } from "./create-Oauth-app-dialog";
+import { CreateWebhookDialog } from "./create-webhook-dialog";
+import { SettingHeader } from "../../components/shared";
+import { AddIntegrationDialog } from "./add-integration-dialog";
+import { AddGPGKeyDialog } from "./add-gpg-key-dialog";
 import { PersonalAccessTokensSection } from "./personal-access-token";
 import { SSHKeysSection } from "./ssh-keys";
 import { GPGKeysSection } from "./gpg-keys";
@@ -11,13 +18,6 @@ import { WebhooksSection } from "./webhooks";
 import { APIUsageSection } from "./api-usage";
 import { IntegrationsSection } from "./integrations";
 import { PreferencesSection } from "./preferences";
-import { CreateTokenDialog } from "./create-token-dialog";
-import { AddSSHKeyDialog } from "./add-ssh-key-dialog";
-import { CreateOAuthAppDialog } from "./create-Oauth-app-dialog";
-import { CreateWebhookDialog } from "./create-webhook-dialog";
-import { SettingHeader } from "../shared";
-import { AddIntegrationDialog } from "./add-integration-dialog";
-import { AddGPGKeyDialog } from "./add-gpg-key-dialog";
 
 /**
  * Main developer settings component.

@@ -1,4 +1,4 @@
-import { GPGKeyMetadata } from "@/app/settings/components/developer/developer-types";
+import { GPGKeyMetadata } from "@/app/settings/developer/developer-types";
 import * as openpgp from "openpgp";
 
 export async function parseGPGKey(
