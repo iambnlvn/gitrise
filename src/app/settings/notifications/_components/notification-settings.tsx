@@ -1,44 +1,39 @@
 "use client";
 
 import { useSettings } from "@/hooks/use-settings";
-import { NotificationState } from "./notification-types";
-import { DEFAULT_STATE, SETTING_GROUPS } from "./constants";
-import { SettingActions, SettingCard, SettingHeader } from "../shared";
+import type { NotificationState } from "../notification-types";
+import { DEFAULT_STATE, SETTING_GROUPS } from "../constants";
+import {
+  SettingCard,
+  SettingHeader,
+  SettingActions,
+} from "../../components/shared";
 import { createSettingRenderer } from "@/lib/create-settings-renderer";
 
 /**
- * Create a renderer for notification settings.
- * Since notifications don't need custom components, we use the default renderer.
+ * Notification settings renderer.
+ * Creates type-safe setting components for notification state.
  */
 const NotificationRenderer = createSettingRenderer<NotificationState>();
 
 /**
- * Main notification settings component.
+ * Notification Settings Component
  *
- * Provides a comprehensive interface for users to manage their notification
- * preferences across different channels, activities, and frequencies.
+ * Manages notification preferences across different channels (email, push),
  *
  * @component
- * @example
- * ```tsx
- * <NotificationsSettings />
- * ```
  */
 export function NotificationsSettings() {
-  const { settings, hasChanges, updateSetting, handleSave, handleReset } =
+  const { settings, hasChanges, isSaving, updateSetting, handleSave } =
     useSettings<NotificationState>(DEFAULT_STATE, {
       successMessage: "Notification settings saved successfully",
-      resetMessage: "Notification settings reset to default",
-      onSave: async (settings) => {
-        console.log("Saving notification settings:", settings);
-      },
     });
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 space-y-6 duration-500">
       <SettingHeader
         title="Notifications"
-        description="Manage how and when you receive notifications"
+        description="Manage how and when you receive notifications across all channels"
       />
 
       {SETTING_GROUPS.map((group) => (
@@ -56,7 +51,6 @@ export function NotificationsSettings() {
                 config={setting}
                 value={settings[setting.key]}
                 onChange={updateSetting}
-                withHoverEffect={true}
               />
             ))}
           </div>
@@ -66,9 +60,7 @@ export function NotificationsSettings() {
       <SettingActions
         hasChanges={hasChanges}
         onSave={handleSave}
-        onReset={handleReset}
-        saveText="Save Changes"
-        resetText="Reset to Default"
+        isLoading={isSaving}
       />
     </div>
   );

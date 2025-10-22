@@ -1,6 +1,9 @@
 import { Mail, MessageSquare, Smartphone, Bell, Filter } from "lucide-react";
 import type { NotificationState, DigestFrequency } from "./notification-types";
-import type { SettingGroupConfig, OptionConfig } from "../shared/types";
+import type {
+  SettingGroupConfig,
+  OptionConfig,
+} from "../components/shared/types";
 
 /**
  * Default notification settings state.
