@@ -29,7 +29,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Globe, Plus, Trash2, CheckCircle, Ban } from "lucide-react";
-import type { IPRule, NewIPRuleConfig, IPRuleType } from "./security-types";
+import { IPRule, IPRuleType, NewIPRuleConfig } from "../security-types";
 
 interface IPAccessControlSectionProps {
   rules: IPRule[];

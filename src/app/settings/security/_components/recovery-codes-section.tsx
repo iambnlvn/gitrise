@@ -10,8 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Key, Download, RefreshCw, AlertTriangle } from "lucide-react";
-import type { RecoveryCode } from "./security-types";
-
+import type { RecoveryCode } from "../security-types";
 interface RecoveryCodesSectionProps {
   codes: RecoveryCode[];
   onRegenerate: () => Promise<void>;

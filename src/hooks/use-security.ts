@@ -8,8 +8,8 @@ import type {
   NewIPRuleConfig,
   PasswordChangeData,
   SecurityAlerts,
-} from "@/app/settings/components/security/security-types";
-import { DEFAULT_SECURITY_STATE } from "@/app/settings/components/security/constants";
+} from "@/app/settings/security/security-types";
+import { DEFAULT_SECURITY_STATE } from "@/app/settings/security/constants";
 
 /**
  * Options for the security hook.

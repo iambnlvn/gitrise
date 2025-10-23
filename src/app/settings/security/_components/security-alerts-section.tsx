@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Bell } from "lucide-react";
-import type { SecurityAlerts } from "./security-types";
+import { SecurityAlerts } from "../security-types";
 
 interface SecurityAlertsSectionProps {
   alerts: SecurityAlerts;

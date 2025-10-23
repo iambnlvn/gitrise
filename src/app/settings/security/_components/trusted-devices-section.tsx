@@ -15,7 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Smartphone, Monitor, Globe, MoreVertical, Trash2 } from "lucide-react";
-import type { TrustedDevice, DeviceType } from "./security-types";
+import type { TrustedDevice, DeviceType } from "../security-types";
 
 interface TrustedDevicesSectionProps {
   devices: TrustedDevice[];

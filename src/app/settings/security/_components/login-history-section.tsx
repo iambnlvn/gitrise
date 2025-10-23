@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { History, MapPin, CheckCircle, XCircle } from "lucide-react";
-import type { LoginHistoryItem } from "./security-types";
+import { LoginHistoryItem } from "../security-types";
 
 interface LoginHistorySectionProps {
   history: LoginHistoryItem[];

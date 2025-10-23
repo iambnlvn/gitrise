@@ -1,19 +1,19 @@
 "use client";
 
 import { useSecurity } from "@/hooks/use-security";
-import { SettingHeader } from "../shared";
-import { PasswordSection } from "./sections/password-section";
-import { TwoFactorSection } from "./sections/two-factor-section";
-import { RecoveryCodesSection } from "./sections/recovery-codes-section";
-import { SessionTimeoutSection } from "./sections/session-timeout-section";
-import { ActiveSessionsSection } from "./sections/active-sessions-section";
-import { IPAccessControlSection } from "./sections/ip-control-section";
-import { TrustedDevicesSection } from "./sections/trusted-devices-section";
-import { SecurityAlertsSection } from "./sections/security-alerts-section";
-import { SecurityKeysSection } from "./sections/security-keys-section";
-import { AccessTokensSection } from "./sections/access-tokens-section";
-import { LoginHistorySection } from "./sections/login-history-section";
-import { DangerZoneSection } from "./sections/danger-zone-section";
+import { SettingHeader } from "../../components/shared";
+import { PasswordSection } from "./password-section";
+import { TwoFactorSection } from "./two-factor-section";
+import { RecoveryCodesSection } from "./recovery-codes-section";
+import { SessionTimeoutSection } from "./session-timeout-section";
+import { ActiveSessionsSection } from "./active-sessions-section";
+import { IPAccessControlSection } from "./ip-control-section";
+import { TrustedDevicesSection } from "./trusted-devices-section";
+import { SecurityAlertsSection } from "./security-alerts-section";
+import { SecurityKeysSection } from "./security-keys-section";
+import { AccessTokensSection } from "./access-tokens-section";
+import { LoginHistorySection } from "./login-history-section";
+import { DangerZoneSection } from "./danger-zone-section";
 
 export function SecuritySettings() {
   const {

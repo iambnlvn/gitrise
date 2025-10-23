@@ -26,7 +26,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Key, Plus, MoreVertical, Trash2 } from "lucide-react";
-import type { SecurityKey, NewSecurityKeyConfig } from "./security-types";
+import type { NewSecurityKeyConfig, SecurityKey } from "../security-types";
 
 interface SecurityKeysSectionProps {
   keys: SecurityKey[];
