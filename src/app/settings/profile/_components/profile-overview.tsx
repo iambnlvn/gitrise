@@ -13,7 +13,7 @@ import { Upload, Trash2, Loader2, GitBranch } from "lucide-react";
 import { useRef } from "react";
 import { toast } from "sonner";
 import type { User } from "@supabase/supabase-js";
-import { SettingCard } from "../shared";
+import { SettingCard } from "../../components/shared";
 import { useIsMobile } from "@/hooks/use-mobile";
 import {
   Drawer,

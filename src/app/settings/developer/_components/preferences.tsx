@@ -14,8 +14,8 @@ import type {
   DeveloperPreferences,
   APIVersion,
   JSONIndentation,
-} from "./developer-types";
-import { API_VERSION_OPTIONS, JSON_INDENTATION_OPTIONS } from "./constants";
+} from "../developer-types";
+import { API_VERSION_OPTIONS, JSON_INDENTATION_OPTIONS } from "../constants";
 
 interface PreferencesSectionProps {
   preferences: DeveloperPreferences;
@@ -125,7 +125,7 @@ export function PreferencesSection({
               </div>
             </div>
             <Select
-              value={preferences.jsonIndentation}
+              value={preferences.jsonIndentation.toString()}
               onValueChange={handleJSONIndentationChange}
               disabled={isLoading}
             >
@@ -134,7 +134,10 @@ export function PreferencesSection({
               </SelectTrigger>
               <SelectContent>
                 {JSON_INDENTATION_OPTIONS.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
+                  <SelectItem
+                    key={option.value}
+                    value={option.value.toString()}
+                  >
                     {option.label}
                   </SelectItem>
                 ))}

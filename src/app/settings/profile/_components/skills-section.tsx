@@ -1,7 +1,7 @@
 "use client";
 //TODO?: should I add a mobile friendly ui like a drawer
 import { useState } from "react";
-import { SettingCard } from "../shared";
+import { SettingCard } from "../../components/shared";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

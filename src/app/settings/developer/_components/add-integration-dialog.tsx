@@ -39,12 +39,12 @@ import {
   IntegrationType,
   NewIntegrationConfig,
   PermissionPreset,
-} from "./developer-types";
+} from "../developer-types";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
-import { PREDEFINED_INTEGRATIONS } from "./constants";
+import { PREDEFINED_INTEGRATIONS } from "../constants";
 import { useDeveloper } from "@/hooks/use-developer";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { PERMISSION_PRESETS } from "@/utils/permission-manager";
