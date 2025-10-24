@@ -14,7 +14,11 @@ import {
 
 import { Download, Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { SettingActions, SettingCard, SettingHeader } from "../shared";
+import {
+  SettingActions,
+  SettingCard,
+  SettingHeader,
+} from "../../components/shared";
 
 export function PrivacySettings() {
   const [hasChanges, setHasChanges] = useState(false);
@@ -257,7 +261,6 @@ export function PrivacySettings() {
       {/* Action Buttondivs */}
       <SettingActions
         hasChanges={hasChanges}
-        onReset={() => setHasChanges(false)}
         onSave={() => {
           setHasChanges(false);
           toast.success("Privacy settings updated successfully!");
