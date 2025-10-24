@@ -7,7 +7,7 @@ import {
   Shield,
   User,
 } from "lucide-react";
-import { SettingsSection } from "./types";
+import { SettingsSection } from "./components/shared/types";
 
 export const SETTINGS_SECTIONS: SettingsSection[] = [
   {

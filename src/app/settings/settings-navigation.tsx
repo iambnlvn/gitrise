@@ -7,8 +7,9 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { ChevronRight, Menu } from "lucide-react";
 import { useState } from "react";
-import { SettingsSection } from "./types";
+
 import { SETTINGS_SECTIONS } from "./constants";
+import { SettingsSection } from "./components/shared/types";
 
 /**
  * Navigation link component for settings.
