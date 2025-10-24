@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 import type { User } from "@supabase/supabase-js";
 import { useProfileStore } from "@/store/profile-store";
-import { SettingActions, SettingCard, SettingHeader } from "../shared";
 
 import { UsernameInput } from "./username-input";
 import { FormInput } from "./form-input";
@@ -21,9 +20,14 @@ import {
 import { SkillsSection } from "./skills-section";
 import { RemoveImageDialog } from "./remove-image-dialog";
 import { ProfileOverview } from "./profile-overview";
+import {
+  SettingActions,
+  SettingCard,
+  SettingHeader,
+} from "../../components/shared";
 
-export function ProfileSection({ user }: { user: User }) {
-  const { formData, hasChanges, resetForm, saveProfile, initializeProfile } =
+export function ProfileSettings({ user }: { user: User }) {
+  const { formData, hasChanges, saveProfile, initializeProfile } =
     useProfileStore();
 
   useEffect(() => {
@@ -157,11 +161,7 @@ export function ProfileSection({ user }: { user: User }) {
         </div>
       </SettingCard>
 
-      <SettingActions
-        hasChanges={hasChanges}
-        onReset={resetForm}
-        onSave={handleSave}
-      />
+      <SettingActions hasChanges={hasChanges} onSave={handleSave} />
 
       <RemoveImageDialog userEmail={user.email || ""} />
     </div>

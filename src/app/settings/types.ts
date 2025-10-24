@@ -11,5 +11,3 @@ export interface SettingsSection {
   icon: React.ComponentType<{ className?: string }>;
   description?: string;
 }
-
-export type UsernameStatus = "idle" | "checking" | "available" | "taken";

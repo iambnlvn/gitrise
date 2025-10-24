@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import type { User } from "@supabase/supabase-js";
 import { z } from "zod";
-import { UsernameStatus } from "@/app/settings/types";
+import { UsernameStatus } from "@/app/settings/profile/profile-types";
 
 export const profileSchema = z.object({
   firstName: z
