@@ -7,13 +7,13 @@ export const metadata = {
   description: "Manage your profile information and preferences",
 };
 
-export default async function NotificationSettingsPage() {
+export default async function ProfileSettingsPage() {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) {
-    redirect("/login");
+    redirect("/auth");
   }
   return (
     <div className="p-6">
