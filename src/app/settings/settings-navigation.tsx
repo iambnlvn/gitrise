@@ -28,6 +28,7 @@ function NavigationLink({
 
   return (
     <Link
+      prefetch
       href={section.path}
       className={cn(
         "group flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium transition-all duration-200 hover:scale-[1.02]",

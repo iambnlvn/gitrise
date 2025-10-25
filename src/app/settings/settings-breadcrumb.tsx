@@ -20,7 +20,9 @@ const settingsPageTitles: Record<string, string> = {
 export function SettingsBreadcrumb() {
   const pathname = usePathname();
   const currentPageTitle = settingsPageTitles[pathname] || "Settings";
-
+  if (pathname === "/settings") {
+    return null;
+  }
   return (
     <div className="bg-background/95 supports-[backdrop-filter]:bg-background/60 border-border sticky top-0 z-10 border-b backdrop-blur">
       <div className="flex h-12 items-center gap-2 px-6 text-sm">
