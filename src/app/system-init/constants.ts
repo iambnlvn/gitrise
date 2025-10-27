@@ -1,4 +1,13 @@
-import { CheckCircle, FolderGit2, Link2, Settings, User } from "lucide-react";
+import {
+  CheckCircle,
+  FolderGit2,
+  Laptop,
+  Link2,
+  Moon,
+  Settings,
+  Sun,
+  User,
+} from "lucide-react";
 
 export const WIZARD_STEPS = [
   {
@@ -69,3 +78,26 @@ export const WIZARD_AVATARS = [
   "/placeholder.svg?height=80&width=80",
   "/placeholder.svg?height=80&width=80",
 ];
+
+export const WIZARD_THEMES = [
+  { id: "light", label: "Light", icon: Sun, description: "Bright and clear" },
+  { id: "dark", label: "Dark", icon: Moon, description: "Easy on the eyes" },
+  {
+    id: "system",
+    label: "System",
+    icon: Laptop,
+    description: "Match OS setting",
+  },
+] as const;
+
+export const WIZARD_DENSITIES = [
+  { id: "compact", label: "Compact", description: "Maximum density" },
+  { id: "comfortable", label: "Comfortable", description: "Balanced layout" },
+  { id: "spacious", label: "Spacious", description: "Relaxed spacing" },
+] as const;
+
+export const WIZARD_EDITING_MODES = [
+  { id: "standard", label: "Standard", description: "Default keybindings" },
+  { id: "vim", label: "Vim", description: "Modal editing" },
+  { id: "emacs", label: "Emacs", description: "Chord keybindings" },
+] as const;

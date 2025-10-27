@@ -12,6 +12,7 @@ import { WIZARD_STEPS as STEPS } from "../constants";
 
 import { useWizardStore } from "@/app/stores/wizard-store";
 import WizardFooter from "./wizard-footer";
+import { HoloDeckStep } from "./holo-deck";
 
 export function SystemInitWizard({
   params,
@@ -41,6 +42,7 @@ export function SystemInitWizard({
 
   const stepComponents = {
     "neural-id": <NeuralIdStep />,
+    "holo-deck": <HoloDeckStep />,
   } as const;
 
   return (
