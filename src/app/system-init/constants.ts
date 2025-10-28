@@ -101,3 +101,42 @@ export const WIZARD_EDITING_MODES = [
   { id: "vim", label: "Vim", description: "Modal editing" },
   { id: "emacs", label: "Emacs", description: "Chord keybindings" },
 ] as const;
+
+export const WIZARD_GIT_PROVIDERS = [
+  {
+    id: "github",
+    name: "GitHub",
+    icon: "https://cdn.simpleicons.org/github",
+    description: "Sync with GitHub repositories",
+    recommended: true,
+  },
+  {
+    id: "gitlab",
+    name: "GitLab",
+    icon: "https://cdn.simpleicons.org/gitlab",
+    description: "Integrated CI/CD and DevOps",
+    recommended: false,
+  },
+  {
+    id: "bitbucket",
+    name: "Bitbucket",
+    icon: "https://cdn.simpleicons.org/bitbucket",
+    description: "Collaborate on code with Bitbucket",
+    recommended: false,
+  },
+];
+
+export const WIZARD_COMMUNICATION_TOOLS = [
+  {
+    id: "slack",
+    name: "Slack",
+    icon: "https://cdn.simpleicons.org/slack",
+    description: "Get notifications in your channels",
+  },
+  {
+    id: "discord",
+    name: "Discord",
+    icon: "https://cdn.simpleicons.org/discord",
+    description: "Connect with your team",
+  },
+];
