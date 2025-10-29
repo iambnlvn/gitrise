@@ -14,6 +14,7 @@ import { useWizardStore } from "@/app/stores/wizard-store";
 import WizardFooter from "./wizard-footer";
 import { HoloDeckStep } from "./holo-deck";
 import { UplinkStep } from "./uplink";
+import { NodeInitStep } from "./node-init";
 
 export function SystemInitWizard({
   params,
@@ -45,6 +46,7 @@ export function SystemInitWizard({
     "neural-id": <NeuralIdStep />,
     "holo-deck": <HoloDeckStep />,
     uplink: <UplinkStep />,
+    "node-init": <NodeInitStep />,
   } as const;
 
   return (

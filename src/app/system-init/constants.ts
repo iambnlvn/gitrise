@@ -140,3 +140,10 @@ export const WIZARD_COMMUNICATION_TOOLS = [
     description: "Connect with your team",
   },
 ];
+
+export const WIZARD_PROJECT_TEMPLATES = [
+  { id: "nextjs", name: "Next.js", icon: "▲", description: "React framework" },
+  { id: "react", name: "React", icon: "⚛️", description: "UI library" },
+  { id: "node", name: "Node.js", icon: "◆", description: "JavaScript runtime" },
+  { id: "python", name: "Python", icon: "🐍", description: "ML & scripting" },
+];

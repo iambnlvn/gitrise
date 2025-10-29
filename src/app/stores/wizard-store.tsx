@@ -24,6 +24,7 @@ export interface WizardData {
     projectName: string;
     importUrl: string;
     createNew: boolean;
+    template: string | null;
   };
 }
 
@@ -63,6 +64,7 @@ const initialData: WizardData = {
     projectName: "",
     importUrl: "",
     createNew: true,
+    template: null,
   },
 };
 
