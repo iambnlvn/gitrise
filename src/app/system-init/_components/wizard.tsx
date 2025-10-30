@@ -15,6 +15,7 @@ import WizardFooter from "./wizard-footer";
 import { HoloDeckStep } from "./holo-deck";
 import { UplinkStep } from "./uplink";
 import { NodeInitStep } from "./node-init";
+import { MissionReadyStep } from "./mission-ready";
 
 export function SystemInitWizard({
   params,
@@ -47,6 +48,7 @@ export function SystemInitWizard({
     "holo-deck": <HoloDeckStep />,
     uplink: <UplinkStep />,
     "node-init": <NodeInitStep />,
+    "mission-ready": <MissionReadyStep />,
   } as const;
 
   return (

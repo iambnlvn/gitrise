@@ -147,3 +147,10 @@ export const WIZARD_PROJECT_TEMPLATES = [
   { id: "node", name: "Node.js", icon: "◆", description: "JavaScript runtime" },
   { id: "python", name: "Python", icon: "🐍", description: "ML & scripting" },
 ];
+
+export const COMPLETION_ITEMS = [
+  { id: "neural-id", label: "Profile Created", icon: User },
+  { id: "holo-deck", label: "Preferences Saved", icon: Settings },
+  { id: "uplink", label: "Integrations Ready", icon: Link2 },
+  { id: "node-init", label: "Workspace Created", icon: FolderGit2 },
+];
