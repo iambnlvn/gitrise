@@ -1,209 +1,167 @@
 "use client";
 
 import {
+  Menu,
   Book,
-  Star,
-  Users,
-  Settings,
-  Plus,
-  GitBranch,
-  Clock,
-  Activity,
   GitPullRequest,
-  Code,
-  Moon,
-  ChevronDown,
+  CircleDot,
+  ChevronLeft,
+  ChevronRight,
+  LogOut,
+  TerminalSquare,
+  Home,
+  Users,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 import { useState } from "react";
-import { Avatar } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import Image from "next/image";
 
-export function RepositorySidebar() {
-  const [recentExpanded, setRecentExpanded] = useState(true);
-  const [orgsExpanded, setOrgsExpanded] = useState(true);
+interface SidebarProps {
+  expanded: boolean;
+  setExpanded: (expanded: boolean) => void;
+}
+
+const NAV_ITEMS = [
+  { label: "Overview", icon: Home, href: "/dashboard" },
+  { label: "Teams", icon: Users, href: "/teams" },
+  { label: "Projects", icon: Book, href: "/projects" },
+  { label: "Issues", icon: CircleDot, href: "/issues" },
+  { label: "Merge Requests", icon: GitPullRequest, href: "/merge-requests" },
+  { label: "CI/CD", icon: TerminalSquare, href: "/pipelines" },
+];
+
+export function RepositorySidebar({ expanded, setExpanded }: SidebarProps) {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <aside className="from-card/50 to-card/80 flex h-screen w-64 flex-col border-r bg-gradient-to-b p-4">
-      <ScrollArea className="mt-4 flex-grow">
-        <div className="space-y-3">
-          <div>
-            <Link href="/new">
-              <Button
-                className="bg-primary/10 hover:bg-primary/20 text-primary w-full justify-start"
-                size="sm"
-              >
-                <Plus className="mr-2 size-4" />
-                New repository
-              </Button>
-            </Link>
+    <>
+      <aside
+        className={cn(
+          "bg-card fixed top-0 left-0 z-40 hidden h-screen flex-col border-r shadow-sm transition-all duration-300 ease-in-out md:flex",
+          expanded ? "w-64" : "w-16",
+        )}
+      >
+        <div
+          className={cn(
+            "mt-20 flex h-16 items-center border-b px-4",
+            expanded ? "justify-between" : "justify-center",
+          )}
+        >
+          <div
+            className={cn(
+              "text-primary text-xl font-bold tracking-tight",
+              !expanded && "hidden",
+            )}
+          >
+            Gitrise
           </div>
+          <button
+            onClick={() => setExpanded(!expanded)}
+            className="hover:bg-accent text-muted-foreground rounded-md p-1 transition-colors"
+          >
+            {expanded ? <ChevronLeft size={18} /> : <ChevronRight size={18} />}
+          </button>
+        </div>
 
-          <div className="space-y-1">
-            <div
-              className="flex cursor-pointer items-center justify-between px-2"
-              onClick={() => setRecentExpanded(!recentExpanded)}
-            >
-              <h3 className="text-muted-foreground flex items-center text-sm font-medium">
-                <Clock className="mr-1 size-3" />
-                Recent
-              </h3>
-              <ChevronDown
-                className={`size-3 transition-transform ${recentExpanded ? "rotate-180 transform" : ""}`}
-              />
+        <nav className="flex-1 space-y-2 px-2 py-4">
+          {NAV_ITEMS.map((item) => (
+            <div key={item.label} className="group relative">
+              <Link
+                href={item.href}
+                className={cn(
+                  "group hover:bg-accent hover:text-accent-foreground flex items-center rounded-md px-2 py-2 text-sm font-medium transition-colors",
+                  expanded ? "justify-start gap-3" : "justify-center",
+                )}
+              >
+                <item.icon className="text-muted-foreground group-hover:text-primary size-5" />
+                {expanded && <span>{item.label}</span>}
+              </Link>
+              {!expanded && (
+                <div className="bg-secondary pointer-events-none absolute top-1/2 left-14 z-50 -translate-y-1/2 rounded-md px-2 py-1 text-xs whitespace-nowrap text-white opacity-0 shadow-lg transition-opacity duration-200 group-hover:opacity-100">
+                  {item.label}
+                </div>
+              )}
             </div>
+          ))}
+        </nav>
 
-            {recentExpanded && (
-              <nav className="space-y-1 pl-2">
-                <Button
-                  variant="ghost"
-                  className="w-full justify-between text-xs"
-                  size="sm"
-                >
-                  <div className="flex items-center">
-                    <GitBranch className="mr-2 size-3.5 text-emerald-500" />
-                    user/project-one
-                  </div>
-                  <Badge variant="outline" className="h-5 text-xs">
-                    3
-                  </Badge>
-                </Button>
-                <Button
-                  variant="ghost"
-                  className="w-full justify-between text-xs"
-                  size="sm"
-                >
-                  <div className="flex items-center">
-                    <GitBranch className="mr-2 size-3.5 text-blue-500" />
-                    user/project-two
-                  </div>
-                  <Badge variant="outline" className="h-5 text-xs">
-                    1
-                  </Badge>
-                </Button>
-              </nav>
+        <div className="border-t p-2">
+          <div className="group relative">
+            <button
+              className={cn(
+                "group flex w-full items-center rounded-md px-2 py-2 text-sm font-medium text-red-500 transition-colors hover:bg-red-50",
+                expanded ? "justify-start gap-3" : "justify-center",
+              )}
+            >
+              <LogOut className="size-5" />
+              {expanded && <span>Sign Out</span>}
+            </button>
+            {!expanded && (
+              <div className="pointer-events-none absolute top-1/2 left-14 z-50 -translate-y-1/2 rounded-md bg-gray-900 px-2 py-1 text-xs whitespace-nowrap text-white opacity-0 shadow-lg transition-opacity duration-200 group-hover:opacity-100">
+                Sign Out
+                <div className="absolute top-1/2 right-full -translate-y-1/2 border-4 border-transparent border-r-gray-900"></div>
+              </div>
             )}
           </div>
+        </div>
+      </aside>
 
-          <Separator className="my-1" />
+      <nav className="bg-background fixed bottom-0 left-0 z-50 flex w-full items-center justify-around border-t p-2 md:hidden">
+        <button
+          onClick={() => setMobileMenuOpen(true)}
+          className="text-muted-foreground flex flex-col items-center gap-1 p-2"
+        >
+          <Menu className="size-5" />
+          <span className="text-[10px]">Menu</span>
+        </button>
+        {NAV_ITEMS.slice(0, 4).map((item) => (
+          <Link
+            key={item.label}
+            href={item.href}
+            className="text-muted-foreground active:text-primary flex flex-col items-center gap-1 p-2"
+          >
+            <item.icon className="size-5" />
+            <span className="text-[10px]">{item.label}</span>
+          </Link>
+        ))}
+      </nav>
 
-          <div className="space-y-2">
-            <h3 className="text-muted-foreground flex items-center px-2 text-sm font-medium">
-              <Code className="mr-1 size-3" />
-              Repositories
-            </h3>
-            <nav className="space-y-1 pl-2">
-              <Button
-                variant="ghost"
-                className="w-full justify-start"
-                size="sm"
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-50 flex md:hidden">
+          <div
+            className="absolute inset-0 bg-transparent backdrop-blur-xs"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+          <div className="bg-background animate-in slide-in-from-left relative flex h-full w-64 flex-col p-4 shadow-xl">
+            <div className="mb-6 flex items-center justify-between">
+              <span className="text-lg font-bold">Menu</span>
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="p-2"
               >
-                <Book className="mr-2 size-4" />
-                My repositories
-              </Button>
-              <Button
-                variant="ghost"
-                className="w-full justify-start"
-                size="sm"
-              >
-                <Star className="mr-2 size-4 text-amber-400" />
-                Starred
-              </Button>
-              <Button
-                variant="ghost"
-                className="w-full justify-start"
-                size="sm"
-              >
-                <Activity className="mr-2 size-4 text-rose-500" />
-                Activity
-              </Button>
-              <Button
-                variant="ghost"
-                className="w-full justify-start"
-                size="sm"
-              >
-                <GitPullRequest className="mr-2 size-4 text-purple-500" />
-                Pull requests
-              </Button>
+                {mobileMenuOpen ? (
+                  <ChevronLeft className="size-5" />
+                ) : (
+                  <ChevronRight className="size-5" />
+                )}
+              </button>
+            </div>
+            <nav className="space-y-1">
+              {NAV_ITEMS.map((item) => (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className="hover:bg-accent flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <item.icon className="text-muted-foreground size-5" />
+                  {item.label}
+                </Link>
+              ))}
             </nav>
           </div>
-
-          <Separator className="my-1" />
-
-          <div className="space-y-2">
-            <div
-              className="flex cursor-pointer items-center justify-between px-2"
-              onClick={() => setOrgsExpanded(!orgsExpanded)}
-            >
-              <h3 className="text-muted-foreground flex items-center text-sm font-medium">
-                <Users className="mr-1 size-3" />
-                Teams
-              </h3>
-              <ChevronDown
-                className={`size-3 transition-transform ${orgsExpanded ? "rotate-180 transform" : ""}`}
-              />
-            </div>
-
-            {orgsExpanded && (
-              <nav className="space-y-1 pl-2">
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start text-xs"
-                  size="sm"
-                >
-                  <div className="mr-2 flex h-4 w-4 items-center justify-center rounded bg-emerald-500 font-bold text-white">
-                    G
-                  </div>
-                  Gitrise Team
-                </Button>
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start text-xs"
-                  size="sm"
-                >
-                  <div className="mr-2 flex h-4 w-4 items-center justify-center rounded bg-blue-500 font-bold text-white">
-                    D
-                  </div>
-                  Design Team
-                </Button>
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start text-xs"
-                  size="sm"
-                >
-                  <Plus className="text-muted-foreground mr-2 size-3" />
-                  Join team
-                </Button>
-              </nav>
-            )}
-          </div>
         </div>
-      </ScrollArea>
-
-      <div className="mt-auto border-t pt-4">
-        <div className="mb-2 flex items-center justify-between px-2">
-          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-            <Moon className="size-4" />
-          </Button>
-          <Button variant="ghost" className="h-8 p-1" size="sm">
-            <Settings className="mr-1 size-4" />
-            <span className="text-xs">Settings</span>
-          </Button>
-        </div>
-
-        <Button variant="ghost" className="w-full justify-start" size="sm">
-          <div className="flex items-center">
-            <Avatar className="mr-2 h-5 w-5">
-              <Image src="/logo.png" alt="@user" width={20} height={20} />
-            </Avatar>
-            <span className="text-sm">username</span>
-          </div>
-        </Button>
-      </div>
-    </aside>
+      )}
+    </>
   );
 }
