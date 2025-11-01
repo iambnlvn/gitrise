@@ -7,17 +7,59 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components/ui/drawer";
 import { Plus } from "lucide-react";
 import { mockNotes } from "../constants";
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 //TODO:Note this is a beta feature and may not be present is a production release
 export default function HighlightNote() {
   const [selectedNote, setSelectedNote] = useState<
     (typeof mockNotes)[0] | null
   >(null);
+  const isMobile = useIsMobile();
+
+  const selectedNoteContent = () => {
+    return (
+      <div className="mt-4">
+        <div className="bg-muted/50 rounded-lg p-4">
+          <p className="text-sm leading-relaxed">{selectedNote?.content}</p>
+        </div>
+
+        <div className="text-muted-foreground mt-4 flex items-center justify-between text-xs">
+          <span>Tap to reply</span>
+          <span>
+            {selectedNote
+              ? `❤️ ${selectedNote.reactions.love}   👍 ${selectedNote.reactions.like}   😂 ${selectedNote.reactions.laugh}`
+              : ""}
+          </span>
+        </div>
+      </div>
+    );
+  };
+
+  const noteHeader = () => (
+    <div className="flex items-center gap-3">
+      <Avatar className="size-16">
+        <AvatarImage src={selectedNote?.avatar} />
+        <AvatarFallback>{selectedNote?.avatar}</AvatarFallback>
+      </Avatar>
+      <div>
+        <h3 className="font-semibold">{selectedNote?.user}</h3>
+        <p className="text-muted-foreground text-sm">
+          {selectedNote?.timestamp || "2h ago"}
+        </p>
+      </div>
+    </div>
+  );
 
   return (
     <>
@@ -68,39 +110,32 @@ export default function HighlightNote() {
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
       </div>
-      <Dialog open={!!selectedNote} onOpenChange={() => setSelectedNote(null)}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-3">
-              <Avatar className="size-16">
-                <AvatarImage src={selectedNote?.avatar} />
-                <AvatarFallback>{selectedNote?.avatar}</AvatarFallback>
-              </Avatar>
-              <div>
-                <h3 className="font-semibold">{selectedNote?.user}</h3>
-                <p className="text-muted-foreground text-sm">
-                  {selectedNote?.timestamp || "2h ago"}
-                </p>
-              </div>
-            </DialogTitle>
-          </DialogHeader>
 
-          <div className="mt-4">
-            <div className="bg-muted/50 rounded-lg p-4">
-              <p className="text-sm leading-relaxed">{selectedNote?.content}</p>
-            </div>
-
-            <div className="text-muted-foreground mt-4 flex items-center justify-between text-xs">
-              <span>Tap to reply</span>
-              <span>
-                {selectedNote
-                  ? `❤️ ${selectedNote.reactions.love}   👍 ${selectedNote.reactions.like}   😂 ${selectedNote.reactions.laugh}`
-                  : ""}
-              </span>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+      {isMobile ? (
+        <Drawer
+          open={!!selectedNote}
+          onOpenChange={() => setSelectedNote(null)}
+        >
+          <DrawerContent>
+            <DrawerHeader>
+              <DrawerTitle>{noteHeader()}</DrawerTitle>
+            </DrawerHeader>
+            <div className="px-4 pb-4">{selectedNoteContent()}</div>
+          </DrawerContent>
+        </Drawer>
+      ) : (
+        <Dialog
+          open={!!selectedNote}
+          onOpenChange={() => setSelectedNote(null)}
+        >
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>{noteHeader()}</DialogTitle>
+            </DialogHeader>
+            {selectedNoteContent()}
+          </DialogContent>
+        </Dialog>
+      )}
     </>
   );
 }
