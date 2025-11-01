@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Repository } from "@/types/profile";
-import { mockRepositories } from "../app/dashboard/constants/constants";
+import { mockRepositories } from "../app/dashboard/constants";
 
 export function useRepositories(userId: string) {
   const [repositories, setRepositories] = useState<Repository[]>([]);
