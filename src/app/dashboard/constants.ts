@@ -133,3 +133,5 @@ export const mockNotes = [
     timestamp: "7h ago",
   },
 ];
+
+export const QUICK_REACTIONS = ["❤️", "😂", "😮", "😢", "🔥", "🎉", "👀", "💯"];
