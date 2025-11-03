@@ -135,3 +135,16 @@ export const mockNotes = [
 ];
 
 export const QUICK_REACTIONS = ["❤️", "😂", "😮", "😢", "🔥", "🎉", "👀", "💯"];
+
+export const COLOR_OPTIONS = [
+  "bg-blue-400 text-blue-800",
+  "bg-green-400 text-green-800",
+  "bg-yellow-400 text-yellow-800",
+  "bg-purple-400 text-purple-800",
+  "bg-pink-400 text-pink-800",
+  "bg-orange-400 text-orange-800",
+  "bg-red-400 text-red-800",
+  "bg-teal-400 text-teal-800",
+  "bg-gray-400 text-gray-800",
+  "bg-indigo-400 text-indigo-800",
+];
