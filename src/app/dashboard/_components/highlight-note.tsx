@@ -15,17 +15,17 @@ import {
 } from "@/components/ui/drawer";
 import { Plus, Send } from "lucide-react";
 import { COLOR_OPTIONS, mockNotes, QUICK_REACTIONS } from "../constants";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 
 //TODO:Note this is a beta feature and may not be present is a production release
-
+//This feature will be abandoned or heavily modified in the future
 export default function HighlightNote() {
   const [selectedNote, setSelectedNote] = useState<
     (typeof mockNotes)[0] | null
@@ -385,7 +385,7 @@ const SelectedNoteContent = ({
   return (
     <div className="mt-4">
       <NoteDisplay selectedNote={selectedNote} />
-      <ActivitySection />
+      <ActivitySection note={selectedNote} />
       <NoteResponseInput />
     </div>
   );
@@ -401,7 +401,7 @@ const NoteDisplay = ({
   </div>
 );
 
-const ActivitySection = () => (
+const ActivitySection = ({ note }: { note: (typeof mockNotes)[0] }) => (
   <div className="space-y-4 pb-4">
     <div className="flex items-center gap-4">
       <div className="bg-border h-px flex-1" />
@@ -410,14 +410,13 @@ const ActivitySection = () => (
       </span>
       <div className="bg-border h-px flex-1" />
     </div>
-
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="text-muted-foreground py-8 text-center text-sm"
-    >
-      No replies yet. Be the first!
-    </motion.div>
+    {note.replies && note.replies.length === 0 ? (
+      <p className="text-muted-foreground text-center text-sm">
+        No activity yet. Be the first to respond!
+      </p>
+    ) : (
+      <NoteInteractionView note={note} />
+    )}
   </div>
 );
 
@@ -452,6 +451,66 @@ const NoteQuickReactions = () => {
           {reaction}
         </Button>
       ))}
+    </div>
+  );
+};
+
+const NoteInteractionView = ({ note }: { note: (typeof mockNotes)[0] }) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, []);
+
+  return (
+    <div className="flex h-full flex-col">
+      <div
+        ref={scrollRef}
+        className="no-scrollbar min-h-0 flex-1 space-y-4 overflow-y-auto scroll-smooth px-1 pb-4"
+      >
+        <AnimatePresence initial={false}>
+          {note.replies?.map((msg) => (
+            <motion.div
+              key={msg.id}
+              initial={{ opacity: 0, y: 10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              className={cn(
+                "flex items-end gap-2",
+                msg.user === "You" ? "flex-row-reverse" : "flex-row",
+              )}
+            >
+              <Avatar className="size-6 shrink-0">
+                {msg.user === "You" ? (
+                  <AvatarFallback className="bg-primary text-primary-foreground text-[8px]">
+                    ME
+                  </AvatarFallback>
+                ) : (
+                  <AvatarImage src={msg.avatar} />
+                )}
+              </Avatar>
+
+              {msg.type === "reaction" ? (
+                <span className="animate-in zoom-in text-2xl duration-300">
+                  {msg.content}
+                </span>
+              ) : (
+                <div
+                  className={cn(
+                    "max-w-[80%] rounded-2xl px-3 py-2 text-sm",
+                    msg.user === "You"
+                      ? "bg-primary text-primary-foreground rounded-br-none"
+                      : "bg-muted rounded-bl-none",
+                  )}
+                >
+                  {msg.content}
+                </div>
+              )}
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </div>
     </div>
   );
 };

@@ -77,6 +77,26 @@ export const mockNotes = [
     content: "Reviewed the latest PR and added comments.",
     reactions: { like: 12, love: 5, laugh: 2 },
     timestamp: "1h ago",
+    replies: [
+      {
+        id: 1,
+        user: "contributor1",
+        avatar: "C",
+        color: "bg-yellow-500",
+        content: "Thanks for the review! I'll address the comments.",
+        type: "reply",
+        timestamp: "45m ago",
+      },
+      {
+        id: 2,
+        user: "contributor2",
+        avatar: "C",
+        color: "bg-pink-500",
+        content: "Appreciate the feedback!",
+        type: "reply",
+        timestamp: "30m ago",
+      },
+    ],
   },
   {
     id: 2,
@@ -86,6 +106,26 @@ export const mockNotes = [
     content: "windows sucks, new major linux kernel update coming soon.",
     reactions: { like: 8, love: 3, laugh: 1210 },
     timestamp: "2h ago",
+    replies: [
+      {
+        id: 1,
+        user: "contributor1",
+        avatar: "C",
+        color: "bg-yellow-500",
+        content: "cant wait to try it out!",
+        type: "reply",
+        timestamp: "45m ago",
+      },
+      {
+        id: 2,
+        user: "contributor2",
+        avatar: "C",
+        color: "bg-pink-500",
+        content: "common Linux W",
+        type: "reply",
+        timestamp: "30m ago",
+      },
+    ],
   },
   {
     id: 3,
