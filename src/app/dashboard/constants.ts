@@ -188,3 +188,42 @@ export const COLOR_OPTIONS = [
   "bg-gray-400 text-gray-800",
   "bg-indigo-400 text-indigo-800",
 ];
+
+export type Task = {
+  id: number;
+  title: string;
+  project: string;
+  due: string;
+  priority: "Critical" | "High" | "Medium" | "Low";
+};
+
+export const mockTasks: Task[] = [
+  {
+    id: 1,
+    title: "Review PR #452 for Auth Service",
+    due: "Today",
+    priority: "High",
+    project: "auth-service",
+  },
+  {
+    id: 2,
+    title: "Update documentation for v2.0",
+    due: "Tomorrow",
+    priority: "Medium",
+    project: "docs",
+  },
+  {
+    id: 3,
+    title: "Fix flaky test in CI pipeline",
+    due: "Next Week",
+    priority: "Low",
+    project: "core-api",
+  },
+  {
+    id: 4,
+    title: "Investigate production latency",
+    due: "Overdue",
+    priority: "Critical",
+    project: "monitoring",
+  },
+];
