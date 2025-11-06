@@ -1,3 +1,11 @@
+import {
+  CircleDot,
+  GitBranch,
+  GitFork,
+  GitPullRequest,
+  Star,
+} from "lucide-react";
+
 export const mockRepositories = [
   {
     name: "awesome-project",
@@ -225,5 +233,55 @@ export const mockTasks: Task[] = [
     due: "Overdue",
     priority: "Critical",
     project: "monitoring",
+  },
+];
+
+export const mockActivity = [
+  {
+    id: 1,
+    user: "jessica-lee",
+    action: "starred",
+    target: "facebook/react",
+    time: "2h ago",
+    icon: Star,
+    iconColor: "text-yellow-500",
+  },
+  {
+    id: 2,
+    user: "david-kim",
+    action: "forked",
+    target: "vercel/next.js",
+    time: "4h ago",
+    icon: GitFork,
+    iconColor: "text-gray-500",
+  },
+  {
+    id: 3,
+    user: "dev-team",
+    action: "pushed to",
+    target: "main",
+    context: "frontend-monorepo",
+    time: "5h ago",
+    icon: GitBranch,
+    iconColor: "text-blue-500",
+  },
+  {
+    id: 4,
+    user: "security-bot",
+    action: "opened issue",
+    target: "vulnerability-report",
+    time: "1d ago",
+    icon: CircleDot,
+    iconColor: "text-red-500",
+  },
+  {
+    id: 5,
+    user: "sarah-dev",
+    action: "merged PR",
+    target: "#882",
+    context: "design-system",
+    time: "1d ago",
+    icon: GitPullRequest,
+    iconColor: "text-purple-500",
   },
 ];
