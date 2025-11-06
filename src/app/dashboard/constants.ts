@@ -196,43 +196,173 @@ export const COLOR_OPTIONS = [
   "bg-gray-400 text-gray-800",
   "bg-indigo-400 text-indigo-800",
 ];
-
-export type Task = {
-  id: number;
+export interface Task {
+  id: string;
   title: string;
-  project: string;
-  due: string;
-  priority: "Critical" | "High" | "Medium" | "Low";
-};
-
+  description?: string;
+  assignedBy: {
+    id: string;
+    name: string;
+    avatar?: string;
+  };
+  assignedTo: {
+    id: string;
+    name: string;
+    avatar?: string;
+  };
+  dueDate: string;
+  createdAt: string;
+  priority: "low" | "medium" | "high" | "urgent";
+  status: "pending" | "in_progress" | "completed" | "overdue";
+  tags?: string[];
+}
 export const mockTasks: Task[] = [
   {
-    id: 1,
-    title: "Review PR #452 for Auth Service",
-    due: "Today",
-    priority: "High",
-    project: "auth-service",
+    id: "task-001",
+    title: "Implement user authentication system",
+    description:
+      "Build a secure authentication system with JWT tokens, password hashing, and multi-factor authentication support.",
+    assignedBy: {
+      id: "user-manager-01",
+      name: "Torvalds",
+      avatar: "https://avatars.githubusercontent.com/u/1024025?v=4",
+    },
+    assignedTo: {
+      id: "user-dev-01",
+      name: "Alex Chen",
+      avatar: "https://avatars.githubusercontent.com/u/97989036?v=4",
+    },
+    dueDate: "2025-11-13T18:00:00Z",
+    createdAt: "2025-11-06T13:45:00Z",
+    priority: "high",
+    status: "in_progress",
+    tags: ["backend", "security", "authentication"],
   },
   {
-    id: 2,
-    title: "Update documentation for v2.0",
-    due: "Tomorrow",
-    priority: "Medium",
-    project: "docs",
+    id: "task-002",
+    title: "Design dashboard wireframes",
+    description:
+      "Create detailed wireframes for the admin dashboard including user management, analytics, and reporting sections.",
+    assignedBy: {
+      id: "user-pm-01",
+      name: "Mike Rodriguez",
+      avatar: "https://avatars.githubusercontent.com/u/1024025?v=4",
+    },
+    assignedTo: {
+      id: "user-designer-01",
+      name: "Emma Wilson",
+      avatar: "https://avatars.githubusercontent.com/u/97989036?v=4",
+    },
+    dueDate: "2025-11-13T18:00:00Z",
+    createdAt: "2025-11-06T13:45:00Z",
+    priority: "medium",
+    status: "pending",
+    tags: ["design", "wireframes", "dashboard", "UX"],
   },
   {
-    id: 3,
-    title: "Fix flaky test in CI pipeline",
-    due: "Next Week",
-    priority: "Low",
-    project: "core-api",
+    id: "task-003",
+    title: "Fix critical database performance issue",
+    description:
+      "Investigate and resolve the slow query performance affecting the user search functionality.",
+    assignedBy: {
+      id: "user-lead-01",
+      name: "David Kim",
+      avatar: "https://avatars.githubusercontent.com/u/1024025?v=4",
+    },
+    assignedTo: {
+      id: "user-dev-02",
+      name: "Lisa Zhang",
+      avatar: "https://avatars.githubusercontent.com/u/97989036?v=4",
+    },
+    dueDate: "2025-11-13T18:00:00Z",
+    createdAt: "2025-11-06T13:45:00Z",
+    priority: "urgent",
+    status: "overdue",
+    tags: ["database", "performance", "backend", "critical"],
   },
   {
-    id: 4,
-    title: "Investigate production latency",
-    due: "Overdue",
-    priority: "Critical",
-    project: "monitoring",
+    id: "task-004",
+    title: "Update project documentation",
+    description:
+      "Revise API documentation and add setup instructions for new team members.",
+    assignedBy: {
+      id: "user-manager-01",
+      name: "Sarah Johnson",
+      avatar: "https://avatars.githubusercontent.com/u/1024025?v=4",
+    },
+    assignedTo: {
+      id: "user-dev-03",
+      name: "James Park",
+      avatar: "https://avatars.githubusercontent.com/u/97989036?v=4",
+    },
+    dueDate: "2025-11-13T18:00:00Z",
+    createdAt: "2025-11-06T13:45:00Z",
+    priority: "low",
+    status: "pending",
+    tags: ["documentation", "API", "onboarding"],
+  },
+  {
+    id: "task-005",
+    title: "Implement real-time notifications",
+    description:
+      "Build WebSocket-based notification system for instant updates across the application.",
+    assignedBy: {
+      id: "user-pm-01",
+      name: "Mike Rodriguez",
+      avatar: "https://avatars.githubusercontent.com/u/1024025?v=4",
+    },
+    assignedTo: {
+      id: "user-dev-01",
+      name: "Alex Chen",
+      avatar: "https://avatars.githubusercontent.com/u/97989036?v=4",
+    },
+    dueDate: "2025-11-13T18:00:00Z",
+    createdAt: "2025-11-06T13:45:00Z",
+    priority: "medium",
+    status: "completed",
+    tags: ["frontend", "websocket", "notifications", "real-time"],
+  },
+  {
+    id: "task-006",
+    title: "Code review for payment integration",
+    description:
+      "Review the Stripe payment integration implementation and ensure PCI compliance standards.",
+    assignedBy: {
+      id: "user-lead-01",
+      name: "David Kim",
+      avatar: "https://avatars.githubusercontent.com/u/1024025?v=4",
+    },
+    assignedTo: {
+      id: "user-senior-01",
+      name: "Rachel Thompson",
+      avatar: "https://avatars.githubusercontent.com/u/97989036?v=4",
+    },
+    dueDate: "2025-11-13T18:00:00Z",
+    createdAt: "2025-11-06T13:45:00Z",
+    priority: "high",
+    status: "in_progress",
+    tags: ["code-review", "payments", "security", "compliance"],
+  },
+  {
+    id: "task-007",
+    title: "Mobile app UI testing",
+    description:
+      "Conduct comprehensive UI testing on iOS and Android versions of the mobile application.",
+    assignedBy: {
+      id: "Torvalds",
+      name: "Torvalds",
+      avatar: "https://avatars.githubusercontent.com/u/1024025?v=4",
+    },
+    assignedTo: {
+      id: "user-qa-01",
+      name: "iambnlvn",
+      avatar: "https://avatars.githubusercontent.com/u/97989036?v=4",
+    },
+    dueDate: "2025-11-13T18:00:00Z",
+    createdAt: "2025-11-06T13:45:00Z",
+    priority: "medium",
+    status: "pending",
+    tags: ["testing", "mobile", "iOS", "android", "QA"],
   },
 ];
 
