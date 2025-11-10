@@ -8,6 +8,7 @@ import {
   ArrowRight,
   CheckCircle2,
   Circle,
+  Search,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Task } from "../constants";
@@ -40,9 +41,9 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import Link from "next/link";
+import { Input } from "@/components/ui/input";
 
 /**
- * Returns CSS classes for styling priority badges based on task priority level
  * @param priority - The priority level of the task (urgent, high, medium, low)
  * @returns CSS class string with appropriate background, text and border colors
  */
@@ -58,7 +59,6 @@ const getPriorityColor = (priority: Task["priority"]) => {
 };
 
 /**
- * Returns appropriate icon component based on task status
  * @param status - Current status of the task (completed, in_progress, pending, overdue)
  * @returns JSX icon element with appropriate styling and color
  */
@@ -75,9 +75,6 @@ const getStatusIcon = (status: Task["status"]) => {
   );
 };
 
-/**
- * Props for individual task item component
- */
 interface TaskItemProps {
   /** The task object containing all task details */
   task: Task;
@@ -86,7 +83,6 @@ interface TaskItemProps {
 }
 
 /**
- * Renders task metadata including priority badge, tags, and due date
  * @param task - The task object to render metadata for
  * @param isOverdue - Whether the task is overdue
  * @param isCompleted - Whether the task is completed
@@ -138,7 +134,6 @@ const TaskMetadata = ({
 );
 
 /**
- * Renders task actions dropdown menu
  * @param onComplete - Callback for completing a task
  * @param onEdit - Callback for editing a task
  * @param onDelete - Callback for deleting a task
@@ -194,7 +189,6 @@ const TaskActions = ({
 );
 
 /**
- * Renders assignment indicators showing who assigned the task and to whom
  * @param assignedBy - User who assigned the task
  * @param assignedTo - User to whom the task is assigned
  */
@@ -242,23 +236,20 @@ const TaskAssignment = ({
   </div>
 );
 
-/**
- * Individual task item component that displays task information in a card format
- */
 const TaskItem = ({ task, onClick }: TaskItemProps) => {
   const isOverdue = dateUtils.isOverdue(task.dueDate);
   const isCompleted = task.status === "completed";
 
   const handleComplete = () => {
-    console.log(`Completing task: ${task.id}`);
+    console.log(`Completed task: ${task.id}`);
   };
 
   const handleEdit = () => {
-    console.log(`Editing task: ${task.id}`);
+    console.log(`Edited task: ${task.id}`);
   };
 
   const handleDelete = () => {
-    console.log(`Deleting task: ${task.id}`);
+    console.log(`Deleted task: ${task.id}`);
   };
 
   return (
@@ -339,14 +330,29 @@ interface TasksProps {
 type TaskFilter = "all" | "urgent" | "assigned";
 
 /**
- * Filters tasks based on the selected filter criteria
+ * Filters tasks based on the selected filter criteria and search term
  * @param tasks - Array of all tasks
  * @param filter - Current filter setting
+ * @param searchTerm - Search term to filter by title and description
  * @returns Filtered array of tasks
  */
-const useFilteredTasks = (tasks: Task[], filter: TaskFilter) => {
+const useFilteredTasks = (
+  tasks: Task[],
+  filter: TaskFilter,
+  searchTerm: string,
+) => {
   return useMemo(() => {
     return tasks.filter((task) => {
+      const matchesSearch =
+        !searchTerm ||
+        task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        task.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        task.tags?.some((tag) =>
+          tag.toLowerCase().includes(searchTerm.toLowerCase()),
+        );
+
+      if (!matchesSearch) return false;
+
       switch (filter) {
         case "urgent":
           return task.priority === "urgent" || task.priority === "high";
@@ -356,11 +362,32 @@ const useFilteredTasks = (tasks: Task[], filter: TaskFilter) => {
           return true;
       }
     });
-  }, [tasks, filter]);
+  }, [tasks, filter, searchTerm]);
 };
 
 /**
- * Renders the task filter tabs
+ * @param searchTerm - Current search term
+ * @param onSearchChange - Callback when search term changes
+ */
+const TaskSearch = ({
+  searchTerm,
+  onSearchChange,
+}: {
+  searchTerm: string;
+  onSearchChange: (term: string) => void;
+}) => (
+  <div className="relative">
+    <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
+    <Input
+      placeholder="Search tasks..."
+      value={searchTerm}
+      onChange={(e) => onSearchChange(e.target.value)}
+      className="focus:ring-primary/20 pl-10 transition-all duration-200 focus:ring-2"
+    />
+  </div>
+);
+
+/**
  * @param filter - Current filter state
  * @param onFilterChange - Callback when filter changes
  */
@@ -410,26 +437,36 @@ const TaskFilters = ({
 /**
  * Renders empty state when no tasks match the filter
  * @param filter - Current filter to show appropriate message
+ * @param searchTerm - Current search term to show in message
  */
-const EmptyState = ({ filter }: { filter: TaskFilter }) => (
+const EmptyState = ({
+  filter,
+  searchTerm,
+}: {
+  filter: TaskFilter;
+  searchTerm: string;
+}) => (
   <div className="text-muted-foreground animate-in fade-in-0 zoom-in-95 py-10 text-center duration-500">
     <p>
-      {filter === "all"
-        ? "No tasks found."
-        : `No tasks found for "${filter}" filter.`}
+      {searchTerm
+        ? `No tasks found matching "${searchTerm}"`
+        : filter === "all"
+          ? "No tasks found."
+          : `No assigned tasks found for.`}
     </p>
   </div>
 );
 
 /**
- * Main Tasks component that displays a list of tasks with filtering capabilities
+ * Main Tasks component that displays a list of tasks with filtering and search capabilities
  * @param tasks - Array of task objects to display
  * @param onTaskClick - Optional callback when task is clicked, defaults to empty function
  */
 export default function Tasks({ tasks, onTaskClick = () => {} }: TasksProps) {
   const [filter, setFilter] = useState<TaskFilter>("all");
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredTasks = useFilteredTasks(tasks, filter);
+  const filteredTasks = useFilteredTasks(tasks, filter, searchTerm);
 
   return (
     <Card className="animate-in fade-in-0 slide-in-from-bottom-8 flex h-full flex-col shadow-sm duration-700">
@@ -457,7 +494,10 @@ export default function Tasks({ tasks, onTaskClick = () => {} }: TasksProps) {
           </Button>
         </div>
 
-        <TaskFilters filter={filter} onFilterChange={setFilter} />
+        <div className="mt-4 space-y-3">
+          <TaskSearch searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+          <TaskFilters filter={filter} onFilterChange={setFilter} />
+        </div>
       </CardHeader>
 
       <CardContent className="p-0">
@@ -474,7 +514,7 @@ export default function Tasks({ tasks, onTaskClick = () => {} }: TasksProps) {
                 </div>
               ))
             ) : (
-              <EmptyState filter={filter} />
+              <EmptyState filter={filter} searchTerm={searchTerm} />
             )}
           </div>
         </div>
