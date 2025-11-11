@@ -470,14 +470,12 @@ export default function Tasks({ tasks, onTaskClick = () => {} }: TasksProps) {
 
   return (
     <Card className="animate-in fade-in-0 slide-in-from-bottom-8 flex h-full flex-col shadow-sm duration-700">
-      <CardHeader className="px-6 py-5">
+      <CardHeader className="px-6">
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="text-xl">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="text-primary inline-block size-5 transition-transform duration-200 hover:scale-110" />
-                Tasks
-              </div>
+            <CardTitle className="flex items-center gap-2 text-lg font-semibold">
+              <CheckCircle2 className="text-primary size-5" />
+              Tasks
             </CardTitle>
             <CardDescription className="transition-colors duration-200">
               Manage your project deliverables
