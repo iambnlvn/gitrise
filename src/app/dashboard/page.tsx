@@ -7,6 +7,7 @@ import { useState } from "react";
 import HighlightNote from "./_components/highlight-note";
 import ActivityFeed from "./_components/activity-feed";
 import Tasks from "./_components/tasks";
+import DashboardHeader from "./_components/dashboard-header";
 
 export default function DashboardPage() {
   const [expanded, setExpanded] = useState(true);
@@ -19,14 +20,7 @@ export default function DashboardPage() {
           expanded ? "md:ml-64" : "md:ml-16",
         )}
       >
-        <div className="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
-            <p className="text-muted-foreground">
-              Welcome back, here&apos;s what&apos;s happening.
-            </p>
-          </div>
-        </div>
+        <DashboardHeader />
 
         <HighlightNote />
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
