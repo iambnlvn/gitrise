@@ -1,7 +1,7 @@
 "use client";
 
 import { RepositorySidebar } from "../../components/layout/repository-sidebar";
-import { mockActivity, mockTasks } from "./constants";
+import { mockActivity } from "./constants";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import HighlightNote from "./_components/highlight-note";
@@ -25,12 +25,7 @@ export default function DashboardPage() {
         <HighlightNote />
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           <div className="space-y-6 lg:col-span-2">
-            <Tasks
-              tasks={mockTasks}
-              onTaskClick={(taskId) => {
-                console.log("Task clicked:", taskId);
-              }}
-            />
+            <Tasks />
           </div>
 
           <div className="space-y-6">
