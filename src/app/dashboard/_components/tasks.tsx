@@ -44,8 +44,8 @@ export default function Tasks() {
         />
       </CardHeader>
 
-      <CardContent className="">
-        <div className="px-4">
+      <CardContent>
+        <div className="sm:px-4">
           <div className="space-y-4">
             {paginatedTasks.length > 0 ? (
               paginatedTasks.map((task, i) => (
