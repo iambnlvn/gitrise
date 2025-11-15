@@ -1,22 +1,16 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { cn } from "@/lib/utils";
 import { mockTasks } from "../constants";
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardFooter,
-} from "@/components/ui/card";
-import { buttonVariants } from "@/components/ui/button";
-import Link from "next/link";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { TaskItem } from "./tasks/task-item";
 import { TaskHeader } from "./tasks/task-header";
 import { EmptyState } from "./tasks/empty-state";
 import { useTaskFilters } from "@/hooks/tasks/use-task-filters";
+import { TaskFooter } from "./tasks/task-footer";
+//TODO!: reduce prop drilling
 
 export default function Tasks() {
   const tasks = mockTasks;
@@ -24,12 +18,11 @@ export default function Tasks() {
   const [isCompact, setIsCompact] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
   const { filter, setFilter, sortBy, setSortBy, sortedTasks } =
     useTaskFilters(tasks);
 
-  //TODO!:Note: Pagination controls ui is not yet implemented
-  // const totalPages = Math.ceil(sortedTasks.length / itemsPerPage);
+  const totalPages = Math.ceil(sortedTasks.length / itemsPerPage);
   const paginatedTasks = useMemo(() => {
     const start = (currentPage - 1) * itemsPerPage;
     return sortedTasks.slice(start, start + itemsPerPage);
@@ -83,17 +76,14 @@ export default function Tasks() {
         </div>
       </CardContent>
 
-      <CardFooter className="flex justify-center">
-        <Link
-          className={cn(
-            buttonVariants({ variant: "link" }),
-            "transition-all duration-200 hover:scale-105",
-          )}
-          href="/tasks"
-        >
-          View All Tasks
-        </Link>
-      </CardFooter>
+      <TaskFooter
+        currentPage={currentPage}
+        itemsPerPage={itemsPerPage}
+        sortedTasks={sortedTasks}
+        setItemsPerPage={setItemsPerPage}
+        setCurrentPage={setCurrentPage}
+        totalPages={totalPages}
+      />
     </Card>
   );
 }
