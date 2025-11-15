@@ -31,7 +31,7 @@ export default function Tasks() {
   useEffect(() => setCurrentPage(1), [filter, itemsPerPage]);
 
   return (
-    <Card className="animate-in fade-in-0 slide-in-from-bottom-8 flex h-full flex-col shadow-sm duration-700">
+    <Card className="animate-in fade-in-0 slide-in-from-bottom-8 flex h-fit flex-col shadow-sm duration-700">
       <CardHeader className="px-6">
         <TaskHeader
           filter={filter}
