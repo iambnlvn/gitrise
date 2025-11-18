@@ -9,6 +9,7 @@ import {
 import { Task } from "../../constants";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Link from "next/link";
 interface TaskFooterProps {
   currentPage: number;
   itemsPerPage: number;
@@ -33,6 +34,13 @@ export const TaskFooter = ({
           {Math.min(currentPage * itemsPerPage, sortedTasks.length)}
         </strong>{" "}
         of <strong>{sortedTasks.length}</strong> tasks
+        {" · "}
+        <Link
+          href="/tasks"
+          className="text-primary font-medium hover:underline"
+        >
+          Show All
+        </Link>
       </div>
 
       <div className="flex items-center gap-2">
