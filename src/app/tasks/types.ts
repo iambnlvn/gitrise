@@ -33,9 +33,10 @@ interface ActivityItem {
   timestamp: string;
 }
 
-interface Task {
+export interface Task {
   id: string;
   title: string;
+  createdBy: string;
   description: string;
   status: "todo" | "in-progress" | "in-review" | "completed";
   priority: "low" | "medium" | "high" | "urgent";
@@ -52,4 +53,3 @@ interface Task {
   estimatedTime: string;
   timeSpent: string;
 }
-export type { Task };

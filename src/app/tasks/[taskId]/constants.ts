@@ -4,6 +4,7 @@ import { Task } from "../types";
 const mockTask: Task[] = [
   {
     id: "1",
+    createdBy: "411d5b64-3322-4357-91d6-ed6a0559ea86",
     title: "Implement user authentication flow",
     description: `## Overview
 Implement a complete user authentication system including login, registration, password reset, and session management.
@@ -126,6 +127,7 @@ Use NextAuth.js for the implementation with Prisma adapter for database persiste
   },
   {
     id: "2",
+    createdBy: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     title: "Design database schema for project management",
     description: `## Overview
 Design a scalable and efficient database schema to support project management features including tasks, projects, users, comments, and activity logs.
