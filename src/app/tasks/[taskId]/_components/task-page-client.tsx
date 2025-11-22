@@ -40,6 +40,14 @@ import { cn } from "@/lib/utils";
 import { Task } from "../../types";
 import { priorityConfig, statusConfig } from "../constants";
 import { EditableText } from "./editable-text";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components/ui/drawer";
+import { Input } from "@/components/ui/input";
 export default function TaskPageClient({
   task,
   capabilities,
@@ -130,6 +138,51 @@ export default function TaskPageClient({
                       editable={editable}
                       variant="title"
                       placeholder="Untitled Task"
+                      renderMobileEditingUI={(state) => {
+                        return (
+                          <Drawer
+                            open={state.isEditing}
+                            onOpenChange={(open) => {
+                              if (!open) state?.handleCancel();
+                            }}
+                          >
+                            <DrawerContent className="min-h-fit w-full">
+                              <DrawerHeader>
+                                <DrawerTitle>Edit Task Title</DrawerTitle>
+                                <DrawerDescription>
+                                  Update the title of your task.
+                                </DrawerDescription>
+                              </DrawerHeader>
+                              <Input
+                                value={state?.editedValue ?? ""}
+                                onChange={(e) =>
+                                  state?.setEditedValue(e.target.value)
+                                }
+                                className="w-full p-4 text-lg"
+                                autoFocus
+                              />
+                              <div className="flex items-center-safe justify-between gap-2 p-6">
+                                <Button
+                                  className="w-1/2"
+                                  onClick={() => {
+                                    state?.handleCancel();
+                                  }}
+                                >
+                                  Cancel
+                                </Button>
+                                <Button
+                                  className="w-1/2"
+                                  onClick={() => {
+                                    state?.handleSave();
+                                  }}
+                                >
+                                  Save
+                                </Button>
+                              </div>
+                            </DrawerContent>
+                          </Drawer>
+                        );
+                      }}
                     />
 
                     <div className="text-muted-foreground flex flex-wrap items-center gap-4 text-sm">
