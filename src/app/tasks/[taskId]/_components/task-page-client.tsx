@@ -146,38 +146,94 @@ export default function TaskPageClient({
                               if (!open) state?.handleCancel();
                             }}
                           >
-                            <DrawerContent className="min-h-fit w-full">
-                              <DrawerHeader>
-                                <DrawerTitle>Edit Task Title</DrawerTitle>
-                                <DrawerDescription>
-                                  Update the title of your task.
-                                </DrawerDescription>
+                            <DrawerContent className="mx-auto w-full max-w-lg">
+                              <DrawerHeader className="border-b pb-4">
+                                <div className="flex items-center gap-3">
+                                  <div className="bg-primary/10 flex size-10 items-center justify-center rounded-full">
+                                    <Edit2 className="text-primary size-5" />
+                                  </div>
+                                  <div>
+                                    <DrawerTitle className="text-left">
+                                      Edit Task Title
+                                    </DrawerTitle>
+                                    <DrawerDescription className="text-left">
+                                      Give your task a clear, descriptive name
+                                    </DrawerDescription>
+                                  </div>
+                                </div>
                               </DrawerHeader>
-                              <Input
-                                value={state?.editedValue ?? ""}
-                                onChange={(e) =>
-                                  state?.setEditedValue(e.target.value)
-                                }
-                                className="w-full p-4 text-lg"
-                                autoFocus
-                              />
-                              <div className="flex items-center-safe justify-between gap-2 p-6">
-                                <Button
-                                  className="w-1/2"
-                                  onClick={() => {
-                                    state?.handleCancel();
-                                  }}
-                                >
-                                  Cancel
-                                </Button>
-                                <Button
-                                  className="w-1/2"
-                                  onClick={() => {
-                                    state?.handleSave();
-                                  }}
-                                >
-                                  Save
-                                </Button>
+
+                              <div className="space-y-4 p-6">
+                                <div className="space-y-2">
+                                  <label
+                                    htmlFor="task-title"
+                                    className="text-muted-foreground text-sm font-medium"
+                                  >
+                                    Title
+                                  </label>
+                                  <Input
+                                    id="task-title"
+                                    value={state?.editedValue ?? ""}
+                                    onChange={(e) =>
+                                      state?.setEditedValue(e.target.value)
+                                    }
+                                    onKeyDown={(e) => {
+                                      if (
+                                        e.key === "Enter" &&
+                                        !state?.isSaving
+                                      ) {
+                                        e.preventDefault();
+                                        state?.handleSave();
+                                      }
+                                    }}
+                                    placeholder="Enter task title..."
+                                    className="h-12 text-base"
+                                    autoFocus
+                                    disabled={state?.isSaving}
+                                  />
+                                  {state?.editedValue?.trim() === "" && (
+                                    <p className="text-destructive text-xs">
+                                      Title cannot be empty
+                                    </p>
+                                  )}
+                                </div>
+
+                                <div className="text-muted-foreground flex items-center gap-2 text-xs">
+                                  <kbd className="bg-muted rounded px-1.5 py-0.5 font-mono text-[10px]">
+                                    Enter
+                                  </kbd>
+                                  <span>to save</span>
+                                </div>
+                              </div>
+
+                              <div className="border-t p-6">
+                                <div className="flex items-center gap-3">
+                                  <Button
+                                    variant="outline"
+                                    className="flex-1"
+                                    onClick={() => state?.handleCancel()}
+                                    disabled={state?.isSaving}
+                                  >
+                                    Cancel
+                                  </Button>
+                                  <Button
+                                    className="flex-1"
+                                    onClick={() => state?.handleSave()}
+                                    disabled={
+                                      state?.isSaving ||
+                                      state?.editedValue?.trim() === ""
+                                    }
+                                  >
+                                    {state?.isSaving ? (
+                                      <>
+                                        <span className="mr-2 size-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                                        Saving...
+                                      </>
+                                    ) : (
+                                      "Save Changes"
+                                    )}
+                                  </Button>
+                                </div>
                               </div>
                             </DrawerContent>
                           </Drawer>
