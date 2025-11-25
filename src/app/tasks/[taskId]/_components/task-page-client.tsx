@@ -20,7 +20,6 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Textarea } from "@/components/ui/textarea";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -48,6 +47,7 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
+import TaskEditorShell from "./task-editor-shell";
 export default function TaskPageClient({
   task,
   capabilities,
@@ -60,9 +60,7 @@ export default function TaskPageClient({
   const router = useRouter();
   const [mode, setMode] = useState<"view" | "edit">("view");
   const [data, setData] = useState(task);
-  // Description editing state will be removed in the future in favor of mdx editor
-  const [isEditingDescription, setIsEditingDescription] = useState(false);
-  const [editedDescription, setEditedDescription] = useState(task.description);
+
   const editable = mode === "edit" && capabilities.canEdit;
 
   const handleStatusChange = (newStatus: Task["status"]) => {
@@ -71,11 +69,6 @@ export default function TaskPageClient({
   const StatusIcon = statusConfig[task.status].icon;
   const handlePriorityChange = (newPriority: Task["priority"]) => {
     setData((prev) => ({ ...prev, priority: newPriority }));
-  };
-
-  const handleSaveDescription = () => {
-    setData((prev) => ({ ...prev, description: editedDescription }));
-    setIsEditingDescription(false);
   };
 
   return (
@@ -294,52 +287,11 @@ export default function TaskPageClient({
               </CardHeader>
 
               <CardContent className="space-y-6">
-                <div>
-                  <div className="mb-2 flex items-center justify-between">
-                    <h3 className="font-semibold">Description</h3>
-                    {!isEditingDescription && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setIsEditingDescription(true)}
-                      >
-                        <Edit2 className="mr-1 size-3" />
-                        Edit
-                      </Button>
-                    )}
-                  </div>
-                  {isEditingDescription ? (
-                    <div className="space-y-2">
-                      <Textarea
-                        value={editedDescription}
-                        onChange={(e) => setEditedDescription(e.target.value)}
-                        rows={8}
-                        className="font-mono text-sm"
-                      />
-                      <div className="flex gap-2">
-                        <Button size="sm" onClick={handleSaveDescription}>
-                          Save
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => {
-                            setEditedDescription(task.description);
-                            setIsEditingDescription(false);
-                          }}
-                        >
-                          Cancel
-                        </Button>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="prose prose-sm dark:prose-invert bg-muted/50 max-w-none rounded-lg p-4">
-                      <pre className="font-sans text-sm whitespace-pre-wrap">
-                        {task.description}
-                      </pre>
-                    </div>
-                  )}
-                </div>
+                <TaskEditorShell
+                  taskId={task.id}
+                  initialMarkdown={task.description}
+                  canEdit={mode === "edit"}
+                />
               </CardContent>
             </Card>
           </motion.div>
