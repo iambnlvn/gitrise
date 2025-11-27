@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { ModeSwitch } from "./mode-switch";
 import VisualEditor from "./editors/visual-editor";
+import MarkdownEditor from "./editors/markdown-editor";
+import MarkdownPreview from "./markdown-preview";
 
 interface TaskEditorShellProps {
   taskId: string;
@@ -22,6 +24,11 @@ export default function TaskEditorShell({
       {mode === "visual" && (
         <VisualEditor value={markdown} onChange={setMarkdown} />
       )}
+      {mode === "markdown" && (
+        <MarkdownEditor value={markdown} onChange={setMarkdown} />
+      )}
+
+      {mode === "preview" && <MarkdownPreview markdown={markdown} />}
     </div>
   );
 }
