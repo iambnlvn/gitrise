@@ -1,9 +1,9 @@
 import {
   TableView,
   Theme,
-} from "@/app/settings/components/appearance/appearance-types";
-import { TableViewPicker } from "@/app/settings/components/appearance/table-view-picker";
-import { ThemePicker } from "@/app/settings/components/appearance/theme-picker";
+} from "@/app/settings/appearance/_components/appearance-types";
+import { TableViewPicker } from "@/app/settings/appearance/_components/table-view-picker";
+import { ThemePicker } from "@/app/settings/appearance/_components/theme-picker";
 import { SelectSetting, ToggleSetting } from "@/app/settings/components/shared";
 import type {
   SettingConfig,

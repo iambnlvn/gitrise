@@ -1,4 +1,4 @@
-import { DEFAULT_DEVELOPER_STATE } from "@/app/settings/components/developer/constants";
+import { DEFAULT_DEVELOPER_STATE } from "@/app/settings/developer/constants";
 import {
   DeveloperPreferences,
   DeveloperState,
@@ -12,7 +12,7 @@ import {
   ConnectedIntegration,
   IntegrationPermissions,
   PermissionChangeEvent,
-} from "@/app/settings/components/developer/developer-types";
+} from "@/app/settings/developer/developer-types";
 import {
   getPermissionSummary,
   mergePermissions,

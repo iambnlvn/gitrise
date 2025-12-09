@@ -4,7 +4,7 @@ import {
   PermissionPresetConfig,
   PermissionScope,
   PermissionValidationResult,
-} from "@/app/settings/components/developer/developer-types";
+} from "@/app/settings/developer/developer-types";
 
 /**
  * Default permission presets.

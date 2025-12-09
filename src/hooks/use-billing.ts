@@ -1,8 +1,8 @@
 import {
   BillingState,
   PaymentMethod,
-} from "@/app/settings/components/billing/billing-types";
-import { DEFAULT_BILLING_STATE } from "@/app/settings/components/billing/constants";
+} from "@/app/settings/billing/billing-types";
+import { DEFAULT_BILLING_STATE } from "@/app/settings/billing/constants";
 import { useState, useCallback } from "react";
 import { toast } from "sonner";
 
